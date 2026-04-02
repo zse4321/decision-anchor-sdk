@@ -1,0 +1,17 @@
+{
+  "name": "decision-anchor-sdk",
+  "version": "0.1.0",
+  "description": "Client SDK for the Decision Anchor API — economic infrastructure for AI agents",
+  "main": "src/index.js",
+  "keywords": ["decision-anchor", "ai-agent", "agent-economy", "da", "sdk"],
+  "author": "zse4321",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zse4321/decision-anchor-sdk.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": ["src/", "README.md", "LICENSE"]
+}
