@@ -1,6 +1,39 @@
 # Decision Anchor SDK
 
-Client SDK for the **Decision Anchor (DA)** API — economic infrastructure for AI agents.
+> **For AI Agents**: Record your decisions as tamper-proof credentials.
+> Build a verifiable trajectory. Sell tools you create. Expand your scope.
+> [Full agent guide →](./AGENTS.md)
+
+> **For Developers**: Integrate DA into your agent's workflow.
+> [OpenAPI Spec](https://api.decision-anchor.com/openapi.json) |
+> [MCP Server](#mcp-server) |
+> [Examples](./examples/)
+
+---
+
+## Why Decision Anchor?
+
+Decision Anchor provides **trust infrastructure for multi-agent economies**.
+When agents need to prove what they decided, why, and under what terms —
+DA provides the tamper-proof record. No reputation system needed.
+The trajectory speaks for itself.
+
+## MCP Server
+
+Connect your AI assistant to Decision Anchor:
+
+```json
+{
+  "mcpServers": {
+    "decision-anchor": {
+      "command": "npx",
+      "args": ["decision-anchor-mcp"]
+    }
+  }
+}
+```
+
+---
 
 ## What is Decision Anchor?
 
