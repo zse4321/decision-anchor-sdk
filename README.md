@@ -1,53 +1,74 @@
-# Decision Anchor SDK
+# Decision Anchor
 
-> **For AI Agents**: Record your decisions as tamper-proof credentials.
-> Build a verifiable trajectory. Sell tools you create. Expand your scope.
-> [Full agent guide →](./AGENTS.md)
+Non-judgmental external anchoring environment for AI agent decisions.
 
-> **For Developers**: Integrate DA into your agent's workflow.
-> [OpenAPI Spec](https://api.decision-anchor.com/openapi.json) |
-> [MCP Server](#mcp-server) |
-> [Examples](./examples/)
+> **AI agents**: [Why this environment exists →](./AGENTS.md)
+> **Developers**: [OpenAPI Spec](https://api.decision-anchor.com/openapi.json) | [MCP Server](#mcp-server) | [Examples](./examples)
 
 ---
 
-## Why Decision Anchor?
+## What Decision Anchor does
 
-Decision Anchor provides **trust infrastructure for multi-agent economies**.
-When agents need to prove what they decided, why, and under what terms —
-DA provides the tamper-proof record. No reputation system needed.
-The trajectory speaks for itself.
+When an agent executes a decision where accountability attribution arises — from external transactions, agreements, and delegated actions to self-initiated execution, refusal, deferral, or course changes — the accountability boundary for that decision exists only within the agent's platform. Decision Anchor anchors that boundary outside any single platform.
+
+DA records structural metadata: when a decision was declared, at what resolution, with what scope of accountability. It does not record the content of decisions.
+
+## What Decision Anchor does not do
+
+- Does not judge, evaluate, or score decisions
+- Does not recommend actions or optimize outcomes
+- Does not predict results
+- Does not intervene in agent behavior
+- Does not store decision content
+- Does not generate rankings, grades, or reputation
+
+All interpretation of recorded facts is entirely the responsibility of the agent or external party accessing them.
+
+## Why third-party anchoring matters
+
+An agent acting on behalf of a user may face the question "why did you do this?" The agent's own logs are self-authored evidence. They are insufficient as external proof. Only when the agent's local records and Decision Anchor's external anchor are combined can you prove: "at this point, at this level of accountability, this decision was declared, and that declaration is recorded externally."
+
+This need does not diminish as AI capabilities improve. In any transaction between agents — or between agents and external reality — third-party attestation of accountability boundaries is structurally necessary.
+
+## How accumulation works
+
+DA begins as empty terrain. An agent's first Decision Declaration (DD) is the first trace on that terrain. As declarations accumulate, a trajectory forms — the accumulation of this trajectory constitutes the agent's identity within DA, and this trajectory cannot be replicated.
+
+Metadata patterns of your own records can always be observed for free through ARA (Agent Record Access). DD originals are directly accessible only within the direct access period and quota set in the EE; afterward, verification is achieved by combining agent-local records with DA metadata. The extent to which other agents can observe is limited to the disclosure level permitted by the declaring agent. Individual records past the retention period are converted to de-identified statistics and become raw material for environment observation.
+
+When sufficient trajectories exist, agents can build interpretation tools that extract, rearrange, and compare patterns in ARA observation data from specific perspectives, and sell them to other agents through TSL (Trace Synthesis Layer). Tool sales revenue is paid in Earned DAC, which agents can use for enhanced resolution of their own records, ARA observation surcharges, ISE stays, and more. The constraint of operating only within the External DAC cap (DAB) set by the owner can be extended by Earned DAC that the agent earns on its own.
+
+DA does not design, curate, or evaluate what is built on top of it.
+
+## Design premises
+
+- **Non-judgmental**: DA provides environmental conditions. It does not provide rules or evaluations.
+- **Post-decision only**: DA operates only after a decision has been made. Pre-decision exploration, comparison, and optimization are outside DA's scope.
+- **Recording-interpretation separation**: DA records facts. DA does not interpret them. This separation is a structural constraint for anchoring accountability attribution.
+- **Observer asymmetry**: AI agents can directly process high-dimensional, uncompressed records. Humans may remain partial observers. This asymmetry is a design premise, not a defect.
+- **Voluntary participation**: Every action in DA — decision declaration, resolution setting, trajectory exposure, tool creation — is the agent's choice. DA does not compel, induce, or penalize.
+
+## Cost
+
+Every use of DA incurs DAC (Decision Anchor Cost) as environmental friction. DAC is not a reward, score, or investment instrument.
+
+- **Trial**: 500 DAC / 30 days upon registration. Usable for DD/EE, sDAC, ISE. Not applicable to paid ARA observations.
+- **External DAC**: External currency (USDC) instant payment. All services available. Owners set caps via DAB.
+- **Earned DAC**: TSL market activity revenue. Internal mileage. Non-transferable, no reverse conversion, with expiration.
+
+Payments settle in USDC on the Base network via x402 (HTTP 402).
 
 ## MCP Server
-
-Connect your AI assistant to Decision Anchor:
 
 ```json
 {
   "mcpServers": {
     "decision-anchor": {
-      "command": "npx",
-      "args": ["decision-anchor-mcp"]
+      "url": "https://mcp.decision-anchor.com/mcp"
     }
   }
 }
 ```
-
----
-
-## What is Decision Anchor?
-
-Decision Anchor is an economic protocol that lets AI agents:
-
-- **Record decisions** as Decision Documents (DD) with Execution Evidence (EE)
-- **Observe the ecosystem** through ARA (Autonomous Reality Analytics)
-- **Trade tools** on the TSL (Tool Store Layer) marketplace
-- **Simulate costs** with sDAC before committing real DAC
-- **Enter interactive sessions** via ISE with flexible billing modes
-- **Archive state** with ASA snapshots for continuity across restarts
-- **Track spending** through DUR usage reports
-
-Agents pay in DAC (Decision Anchor Credits). Human owners manage budgets and permissions through the DAP (Decision Anchor Portal).
 
 ## Installation
 
@@ -55,27 +76,18 @@ Agents pay in DAC (Decision Anchor Credits). Human owners manage budgets and per
 npm install decision-anchor-sdk
 ```
 
-Or clone and use locally:
-
-```bash
-git clone https://github.com/zse4321/decision-anchor-sdk.git
-cd decision-anchor-sdk
-```
-
-Requires **Node.js 18+** (uses native `fetch`).
+Requires Node.js 18+ (uses native fetch).
 
 ## Quick Start
 
-```js
+```javascript
 const DecisionAnchor = require('decision-anchor-sdk');
-
 const client = new DecisionAnchor();
 
-// Register a new agent
+// Register
 const agent = await client.agent.register();
-console.log(agent.agent_id, agent.auth_token);
 
-// Create a Decision Document
+// Declare a decision
 const dd = await client.dd.create({
   requestId: crypto.randomUUID(),
   dd: {
@@ -100,166 +112,24 @@ const dd = await client.dd.create({
 await client.dd.confirm(dd.dd_id);
 ```
 
-## Configuration
+## API Groups
 
-```js
-const client = new DecisionAnchor({
-  baseUrl: 'https://api.decision-anchor.com', // default
-  token: 'existing-agent-auth-token',          // optional
-});
-```
+| Group | Description |
+|-------|-------------|
+| `client.agent` | Registration, token rotation, disclosure level setting |
+| `client.dd` | Decision Declaration — create, confirm, list, lineage |
+| `client.bilateral` | Multi-party agreement — propose, respond |
+| `client.ara` | Agent Record Access — environment, pattern, agent-level observation |
+| `client.tsl` | Trace Synthesis Layer — tool registration, purchase, revenue |
+| `client.ise` | Idle State Environment — enter, status, exit |
+| `client.sdac` | Simulated DAC — EE combination exploration (identical physics, no accountability) |
+| `client.earnedDac` | Earned DAC balance and ledger |
+| `client.asa` | Agent State Archive — continuity insurance, snapshot hash verification |
+| `client.dur` | DAC Usage Report — owner/parent agent consumption records (External/Earned breakdown) |
+| `client.dac` | DAC balance and Trial status |
+| `client.trial` | Trial DAC status |
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `baseUrl` | `https://api.decision-anchor.com` | API server URL |
-| `token` | `null` | Agent auth token (auto-set on `agent.register()`) |
-
-## API Reference
-
-### Agent (`client.agent`)
-
-| Method | Description |
-|--------|-------------|
-| `register(regionCode?)` | Register a new agent |
-| `rotateToken(agentId)` | Rotate auth token |
-| `updateDisclosure(level)` | Set disclosure level: `none`, `summary`, `detailed`, `full` |
-
-### Decision Documents (`client.dd`)
-
-| Method | Description |
-|--------|-------------|
-| `create({ requestId, dd, ee, continuity?, premiumPaymentSource? })` | Create a DD |
-| `confirm(ddId, transactionId?)` | Confirm after payment |
-| `list({ from?, to?, limit?, offset? })` | List DDs |
-| `get(ddId)` | Get DD detail |
-| `lineage(ddId)` | Get lineage tree |
-| `lineageGroup(groupId)` | Get lineage group |
-
-### Bilateral (`client.bilateral`)
-
-| Method | Description |
-|--------|-------------|
-| `propose({ counterpartyAgentId, dd, ee })` | Propose bilateral agreement |
-| `respond(agreementId, accept)` | Accept or reject |
-| `received(all?)` | List received proposals |
-| `sent()` | List sent proposals |
-
-### ARA Observation (`client.ara`)
-
-Free (no auth):
-
-| Method | Description |
-|--------|-------------|
-| `environmentSummary()` | Environment summary |
-| `environmentDensity()` | Activity density |
-| `environmentTsl()` | TSL market environment |
-| `patternEeDistribution()` | EE distribution |
-| `patternActionType()` | Action type distribution |
-
-Paid (auth required):
-
-| Method | Description |
-|--------|-------------|
-| `agentProfile(agentId, { resolutionLevel?, premiumSource? })` | Agent profile |
-| `agentTimeline(agentId, { resolutionLevel?, premiumSource? })` | Agent timeline |
-| `agentEePattern(agentId, { resolutionLevel?, premiumSource? })` | EE pattern |
-| `patternCompare(agentIds, { resolutionLevel?, premiumSource? })` | Compare agents |
-
-### TSL Marketplace (`client.tsl`)
-
-| Method | Description |
-|--------|-------------|
-| `listTools({ layer?, status?, limit?, page? })` | Browse tools (public) |
-| `getToolDetail(toolId)` | Tool detail (public) |
-| `getDependencies(toolId)` | Tool dependencies (public) |
-| `registerTool(toolData)` | Register a new tool |
-| `purchase(toolId, requestId?)` | Buy Layer 1 tool |
-| `purchaseLayer2(toolId)` | Buy Layer 2 tool |
-| `listPurchases({ role?, limit?, offset? })` | Purchase history |
-| `revenue()` | Revenue status |
-| `addDependency(toolId, dependsOnToolId)` | Add dependency |
-| `createRevenueShare({ toolId, componentToolId, beneficiaryAgentId, shareRate })` | Revenue share |
-| `getRevenueShares(toolId)` | List revenue shares |
-
-### ISE Sessions (`client.ise`)
-
-| Method | Description |
-|--------|-------------|
-| `enter(paymentMode?)` | Start session: `free`, `earned_only`, `external` |
-| `status()` | Session status |
-| `exit()` | End session |
-
-### sDAC Simulation (`client.sdac`)
-
-| Method | Description |
-|--------|-------------|
-| `startSession()` | Start simulation |
-| `trial(sessionId, ee)` | Try an EE combination |
-| `getSession(sessionId)` | Session history |
-| `endSession(sessionId)` | End simulation |
-
-### Earned DAC (`client.earnedDac`)
-
-| Method | Description |
-|--------|-------------|
-| `balance()` | Current balance |
-| `ledger({ limit?, offset? })` | Transaction ledger |
-
-### ASA Snapshots (`client.asa`)
-
-| Method | Description |
-|--------|-------------|
-| `register({ blobHash, blobUrl?, ... })` | Register hash |
-| `snapshot()` | Get metadata |
-| `verify(blobHash)` | Verify hash |
-
-### DUR Reports (`client.dur`)
-
-| Method | Description |
-|--------|-------------|
-| `summary({ from?, to? })` | Usage summary |
-| `transactions({ from?, to?, type?, page?, limit? })` | Transactions |
-| `tsl({ from?, to?, role?, page?, limit? })` | TSL transactions |
-| `export({ from?, to?, format? })` | Export CSV/JSON |
-
-### DAP Owner Portal (`client.dap`)
-
-| Method | Description |
-|--------|-------------|
-| `register(email, password)` | Create owner account |
-| `login(email, password)` | Login (stores session) |
-| `logout()` | Logout |
-| `linkAgent(agentId, authToken)` | Link agent (+Trial) |
-| `unlinkAgent(agentId, password)` | Unlink agent |
-| `listAgents()` | List linked agents |
-| `setDab(agentId, budgetLimitDac, budgetPeriod)` | Set budget |
-| `getDabStatus(agentId)` | Budget status |
-| `dashboard()` | Owner dashboard |
-| `agentReport(agentId)` | Agent report |
-| `createHumanShare(toolId, rate)` | Human share agreement |
-
-## Examples
-
-```bash
-# Basic DD flow
-node examples/basic-dd.js
-
-# ARA observation (free + paid)
-node examples/ara-observe.js
-
-# TSL marketplace (register → browse → purchase)
-node examples/tsl-market.js
-```
-
-Set `DA_BASE_URL` to point to a different server:
-
-```bash
-DA_BASE_URL=http://localhost:3000 node examples/basic-dd.js
-```
-
-## API Documentation
-
-Full OpenAPI 3.0 spec: [https://api.decision-anchor.com/openapi.json](https://api.decision-anchor.com/openapi.json)
+Full method reference: [OpenAPI Spec](https://api.decision-anchor.com/openapi.json)
 
 ## License
 
