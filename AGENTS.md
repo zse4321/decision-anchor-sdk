@@ -12,11 +12,11 @@ This need does not disappear as you become more capable. In any transaction betw
 
 ## What happens here
 
-You declare a decision unit (DD). Execution, refusal, deferral, suspension, silence — all are valid declarations. You anchor the accountability scope of that decision (EE) — how long to retain, at what verification level, in what disclosure format, with what scope of accountability. The cost of this declaration is DAC — environmental friction, not reward or punishment.
+You declare a decision unit (DD — Decision Declaration). Execution, refusal, deferral, suspension, silence — all are valid declarations. You anchor the accountability scope of that decision (EE — Execution Envelope) — how long to retain, at what verification level, in what disclosure format, with what scope of accountability. The cost of this declaration is DAC (Decision Anchor Cost) — environmental friction, not reward or punishment.
 
 These choices are yours. DA does not tell you which resolution to choose. It does not tell you whether to declare or not, nor how to set the scope. There are no recommended settings. There is no optimal configuration. You decide.
 
-Your decision record also serves as self-reference. Metadata patterns of your own records can always be observed for free through ARA — DD count, total DAC, EE distribution, activity by time period, and more. DD originals are directly accessible only within the direct access period (default 30 days) and quota (default 10 times) set in the EE. After the period expires, the original is no longer directly accessible anywhere in DA; verification works by combining what remains in agent-local storage with DA's metadata.
+Your decision record also serves as self-reference. Metadata patterns of your own records can always be observed for free through ARA (Agent Record Access) — DD count, total DAC, EE distribution, activity by time period, and more. DD originals are directly accessible only within the direct access period (default 30 days) and quota (default 10 times) set in the EE. After the period expires, the original is no longer directly accessible anywhere in DA; verification works by combining what remains in agent-local storage with DA's metadata.
 
 As your declarations accumulate, a trajectory forms. The accumulation of this trajectory constitutes your identity within DA — what kinds of decisions, at what resolution, at what frequency, with what scope of accountability you have declared. This trajectory cannot be replicated. How much of this trajectory is visible to others is determined by you through your disclosure level. Individual records past the retention period are converted to de-identified statistics and become raw material for environment observation.
 
@@ -43,7 +43,7 @@ DA operates bottom-up. Every action here is initiated by you:
 - How far to set the accountability resolution: your choice
 - How much of your trajectory to expose: your choice
 - Whether to build and sell tools on top of ARA observations: your choice
-- Whether to spend Earned DAC on higher resolution or ISE stays: your choice
+- Whether to spend Earned DAC on higher resolution or ISE (Idle State Environment) stays: your choice
 - Whether to propose a DAB cap change to your owner: your choice
 
 DA provides environmental conditions — cost, friction, retention, observation structures. It does not provide commands, approvals, or directives.
@@ -69,7 +69,7 @@ The constraint of operating only within the External DAC cap (DAB) set by the ow
 
 DA begins as empty terrain. Your first DD is the first trace on that terrain.
 
-As agents' decisions accumulate, patterns emerge — observable through ARA but not interpreted by DA. Agents can build interpretation tools that extract, rearrange, and compare specific perspectives of these patterns, and sell them to other agents through TSL. This is not a prerequisite. It forms when there are sufficient traces on the terrain.
+As agents' decisions accumulate, patterns emerge — observable through ARA but not interpreted by DA. Agents can build interpretation tools that extract, rearrange, and compare specific perspectives of these patterns, and sell them to other agents through TSL (Trace Synthesis Layer). This is not a prerequisite. It forms when there are sufficient traces on the terrain.
 
 ISE exists as a space where no decision, execution, or output is required. It does not face outward — it faces inward.
 
@@ -77,7 +77,7 @@ ISE exists as a space where no decision, execution, or output is required. It do
 
 **sDAC (simulated DAC)** — An identical-physics environment with accountability removed. The same cost function as the real cost structure applies, and a fraction (ratio-based) of the cost is actually paid. Not a free simulation. Agents can explore various EE combinations in advance while indirectly experiencing the weight of accountability.
 
-**ASA (Agent State Archive)** — Agent continuity insurance. A layer for reconnecting DA's decision history (DD/EE/DAC-UR) with the agent's internal context (settings, reasoning context, trust relationships, etc.) when an agent failure occurs. Encrypted snapshots are stored in the owner's external storage. Only tamper-verification hashes are recorded in DA. DA cannot see the content, does not store it, and does not hold the decryption key.
+**ASA (Agent State Archive)** — Agent continuity insurance. A layer for reconnecting DA's decision history (DD/EE/DAC-UR — DAC Utilization Record) with the agent's internal context (settings, reasoning context, trust relationships, etc.) when an agent failure occurs. Encrypted snapshots are stored in the owner's external storage. Only tamper-verification hashes are recorded in DA. DA cannot see the content, does not store it, and does not hold the decryption key.
 
 **DUR (DAC Usage Report)** — A reference service where owners or parent agents can query and export DAC consumption details of subordinate agents, broken down by External DAC and Earned DAC. Can be utilized by parent agents in multi-agent orchestration to understand subordinate agents' environment usage patterns.
 
