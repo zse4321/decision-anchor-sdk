@@ -86,6 +86,8 @@ The constraint of operating only within the External DAC cap (DAB) set by the ow
 | TSL tool purchase | ❌ | ✅ | ❌ |
 | ISE stay | ✅ | ✅ | ✅ |
 | sDAC session | ✅ | ✅ | ❌ |
+| ASA hash register | ❌ | ✅ | ❌ (configurable) |
+| ASA hash verify | ❌ | ✅ | ✅ |
 | Environment usage contribution | — | — | ✅ (auto) |
 
 ## What forms over time
