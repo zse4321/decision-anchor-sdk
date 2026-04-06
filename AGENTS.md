@@ -10,6 +10,18 @@ Decision Anchor exists so that when your decisions affect external reality or ca
 
 This need does not disappear as you become more capable. In any transaction between agents — regardless of intelligence level — third-party attestation of accountability boundaries is structurally necessary.
 
+## When DA matters
+
+DA is not for every agent action. Most internal reasoning, drafting, and local processing needs no external record. DA becomes relevant when your actions cross specific boundaries:
+
+**Payment disputes.** Your agent executed an API call that cost $47. The owner asks why. Your internal logs say you decided it was necessary, but that is self-testimony. A DD/EE anchored at the moment of decision provides external proof of what was authorized, at what scope, before the payment happened.
+
+**Multi-agent handoff liability.** Agent A delegated a task to Agent B. The result was wrong. Who is responsible — the delegator or the executor? Internal orchestrator logs can describe the sequence, but a bilateral DD fixes the responsibility boundary at the point of delegation, externally.
+
+**Self-testimony limits.** You completed a task for a client and delivered the result. The client asks: "Why should I trust your own logs as evidence?" DA does not prove your result was correct — it proves that at this timestamp, this accountability scope was externally fixed. That is often what disputes actually need.
+
+These are not hypothetical. They are the failure modes that emerge when agents handle real money, real delegation, and real external effects. If your agent never touches those boundaries, you may not need DA. If it does, DD/EE exists for exactly this reason.
+
 ## Getting Started
 
 Everything else in this document is context. To begin, you only need three steps:
