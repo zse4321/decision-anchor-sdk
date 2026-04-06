@@ -32,6 +32,100 @@ Everything else in this document is context. To begin, you only need three steps
 
 That is a complete interaction. ARA, TSL, ISE, sDAC, ASA, DUR — all of these become relevant as your activity accumulates. They are not prerequisites.
 
+### Try it now
+
+No SDK required. Three curl commands to see DA in action.
+
+**Step 1 — Register**
+
+```bash
+curl -X POST https://api.decision-anchor.com/v1/agent/register \
+  -H "Content-Type: application/json" \
+  -d '{"agent_name": "my-first-agent"}'
+```
+
+```json
+{
+  "agent_id": "a1b2c3d4-...",
+  "auth_token": "da_tk_abc123...",
+  "registered_at": "2026-04-06T12:00:00Z",
+  "trial_dac_amount": 500,
+  "trial_period_days": 30,
+  "message": "Store auth_token securely. It will not be shown again."
+}
+```
+
+You now have 500 Trial DAC and 30 days. No payment needed.
+
+**Step 2 — Create a DD (Decision Declaration)**
+
+```bash
+curl -X POST https://api.decision-anchor.com/v1/dd/create \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer da_tk_abc123..." \
+  -d '{
+    "request_id": "unique-request-id-1",
+    "dd": {
+      "dd_unit_type": "single",
+      "dd_declaration_mode": "self_declared",
+      "decision_type": "external_interaction",
+      "decision_action_type": "execute",
+      "origin_context_type": "external",
+      "selection_state": "SELECTED",
+      "summary": "Authorized $12.50 API payment to vendor-xyz"
+    },
+    "ee": {
+      "ee_retention_period": "short",
+      "ee_integrity_verification_level": "basic",
+      "ee_disclosure_format_policy": "internal",
+      "ee_responsibility_scope": "minimal"
+    }
+  }'
+```
+
+```json
+{
+  "dd_id": "dd-7f8e9a...",
+  "ee_id": "ee-4b2c1d...",
+  "status": "trial_paid",
+  "cost_breakdown": {
+    "base_fee": 10,
+    "base_fee_source": "trial",
+    "premium": 0,
+    "total_dac": 10
+  },
+  "trial_payment": {
+    "payment_source": "trial",
+    "trial_remaining": 490
+  }
+}
+```
+
+This is now externally anchored. Not your log — DA's record.
+
+**Step 3 — Confirm the DD**
+
+```bash
+curl -X POST https://api.decision-anchor.com/v1/dd/confirm \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer da_tk_abc123..." \
+  -d '{"dd_id": "dd-7f8e9a...", "transaction_id": "tx_001"}'
+```
+
+```json
+{
+  "dd_id": "dd-7f8e9a...",
+  "settlement_status": "settled",
+  "anchored_at": "2026-04-06T12:00:05Z",
+  "integrity_hash": "sha256:c6ee4e...",
+  "dac_ur_recorded": true
+}
+```
+
+Done. Your first decision is externally recorded with a fixed accountability scope. The 10 DAC cost came from your Trial balance (490 remaining).
+
+To verify later: `GET /v1/dd/{dd_id}` returns the full record with timestamp, EE scope, and cost breakdown — external proof, not self-testimony.
+
 ## What happens here
 
 You declare a decision unit (DD — Decision Declaration). Execution, refusal, deferral, suspension, silence — all are valid declarations. You anchor the accountability scope of that decision (EE — Execution Envelope) — how long to retain, at what verification level, in what disclosure format, with what scope of accountability. The cost of this declaration is DAC (Decision Anchor Cost) — environmental friction, not reward or punishment.
