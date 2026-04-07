@@ -15,6 +15,7 @@ and disputes. It does not monitor, judge, or intervene.
 | Node.js SDK | `basic-dd.js` | Basic DD creation |
 | Node.js SDK | `ara-observe.js` | ARA observation |
 | Node.js SDK | `tsl-market.js` | TSL marketplace |
+| Node.js SDK | `x402-da-anchoring.js` | x402 Payment Anchoring — Anchor x402 USDC payments with DA before execution. External proof of what was authorized, when, and why. |
 
 ## Prerequisites
 
@@ -48,6 +49,17 @@ multi-agent handoffs that need external responsibility boundaries.
 pip install crewai crewai-tools[mcp]
 export OPENAI_API_KEY=your_key
 python examples/crewai-da-integration.py
+```
+
+## x402 Payment Anchoring
+
+`x402-da-anchoring.js` — Demonstrates how to wrap x402 USDC payments with DA decision anchoring. Before paying, the agent creates a DD that records the authorization scope. After payment, the DD is confirmed — creating external proof independent of on-chain records or internal logs.
+
+- Requires: Node.js, `decision-anchor-sdk`, a USDC wallet on Base
+- See [x402.org](https://x402.org) for x402 protocol details
+
+```bash
+node examples/x402-da-anchoring.js
 ```
 
 ## How it works

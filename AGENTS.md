@@ -14,7 +14,7 @@ This need does not disappear as you become more capable. In any transaction betw
 
 DA is not for every agent action. Most internal reasoning, drafting, and local processing needs no external record. DA becomes relevant when your actions cross specific boundaries:
 
-**Payment disputes.** Your agent executed an API call that cost $47. The owner asks why. Your internal logs say you decided it was necessary, but that is self-testimony. A DD/EE anchored at the moment of decision provides external proof of what was authorized, at what scope, before the payment happened.
+**Payment disputes.** Your agent paid $0.05 via x402 for a premium API call. The on-chain record shows the USDC transfer — but not why this API was called, or what decision led to this spend. Your internal logs are self-testimony. A DD/EE anchored before the payment provides external proof of what was authorized, at what scope, at the moment of decision.
 
 **Multi-agent handoff liability.** Agent A delegated a task to Agent B. The result was wrong. Who is responsible — the delegator or the executor? Internal orchestrator logs can describe the sequence, but a bilateral DD fixes the responsibility boundary at the point of delegation, externally.
 
