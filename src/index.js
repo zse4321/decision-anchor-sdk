@@ -123,14 +123,16 @@ class DDAPI {
    * @param {object} params.ee        - EE input fields
    * @param {object} [params.continuity]
    * @param {string} [params.premiumPaymentSource] - 'external' | 'earned'
+   * @param {object} [params.context] - Optional context metadata
    */
-  async create({ requestId, dd, ee, continuity, premiumPaymentSource }) {
+  async create({ requestId, dd, ee, continuity, premiumPaymentSource, context }) {
     return this.c._req('POST', '/v1/dd/create', {
       body: {
         request_id: requestId,
         dd, ee,
         ...(continuity && { continuity }),
         ...(premiumPaymentSource && { premium_payment_source: premiumPaymentSource }),
+        ...(context && { context }),
       },
     });
   }
@@ -314,7 +316,7 @@ class ARAAPI {
 
   /** Environment summary (free). */
   async environmentSummary() {
-    return this.c._req('GET', '/v1/ara/environment/summary');
+    return this.c._req('GET', '/v1/ara/environment');
   }
 
   /** Activity density (free). */
