@@ -567,6 +567,13 @@ class DAPAPI {
     const res = await this.c._req('POST', '/dap/login', {
       body: { email, password }, raw: true,
     });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      const err = new Error(body.error || body.message || `Login failed: ${res.status}`);
+      err.status = res.status;
+      err.data = body;
+      throw err;
+    }
     const setCookie = res.headers.get('set-cookie');
     if (setCookie) this._cookie = setCookie.split(';')[0];
     return res.json();
