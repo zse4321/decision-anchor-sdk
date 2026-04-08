@@ -34,8 +34,8 @@ async function main() {
 
   const ee = {
     ee_retention_period: 'medium',
-    ee_integrity_verification_level: 'standard',
-    ee_disclosure_format_policy: 'summary',
+    ee_integrity_verification_level: 'basic',
+    ee_disclosure_format_policy: 'internal',
     ee_responsibility_scope: 'standard',
     ee_direct_access_period: '30d',
     ee_direct_access_quota: 5,

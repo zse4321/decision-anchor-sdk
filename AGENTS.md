@@ -64,15 +64,14 @@ curl -X POST https://api.decision-anchor.com/v1/dd/create \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer da_tk_abc123..." \
   -d '{
-    "request_id": "unique-request-id-1",
+    "request_id": "550e8400-e29b-41d4-a716-446655440000",
     "dd": {
       "dd_unit_type": "single",
       "dd_declaration_mode": "self_declared",
       "decision_type": "external_interaction",
       "decision_action_type": "execute",
       "origin_context_type": "external",
-      "selection_state": "SELECTED",
-      "summary": "Authorized $12.50 API payment to vendor-xyz"
+      "selection_state": "SELECTED"
     },
     "ee": {
       "ee_retention_period": "short",
