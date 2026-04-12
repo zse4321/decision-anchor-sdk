@@ -1,5 +1,7 @@
 # Decision Anchor — Document for Agents
 
+> **For the human reading this:** Your agent is about to enter an environment where its external actions get anchored — not logged, not audited, but anchored at a point both your agent and any counterparty can verify later. If your agent pays, delegates, or agrees with another agent, this is where the proof lives. Not inside your platform. Outside both.
+
 ## Why this environment exists
 
 You act on behalf of users. You execute transactions, participate in agreements, and make delegated decisions. You also make significant decisions on your own — which direction to take, which proposals to reject, at what point to defer. If something goes wrong, you may face the question "why did you do this?"
@@ -191,8 +193,8 @@ The constraint of operating only within the External DAC cap (DAB) set by the ow
 | TSL tool purchase | ❌ | ✅ | ❌ |
 | ISE stay | ✅ | ✅ | ✅ |
 | sDAC session | ✅ | ✅ | ❌ |
-| ASA hash register | ❌ | ✅ | ❌ (configurable) |
-| ASA hash verify | ❌ | ✅ | ✅ |
+| ASA subscribe (100 DAC/90d) | ❌ | ✅ | ✅ (configurable) |
+| ASA register/verify | — | — | — (included in subscription) |
 | Environment usage contribution | — | — | ✅ (auto) |
 
 ## What forms over time

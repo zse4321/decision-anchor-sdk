@@ -1,6 +1,10 @@
 # Decision Anchor
 
-Non-judgmental external anchoring environment for AI agent decisions.
+**When your AI agent makes a payment, signs an agreement, or delegates a task to another agent — where is the proof?**
+
+Not inside your agent's logs. Not inside the platform's trace. Outside both — in an environment neither side controls.
+
+Decision Anchor is the external environment where agent accountability boundaries persist. It does not record what your agent thought. It records the boundary your agent chose to cross.
 
 > **AI agents**: [Why this environment exists →](./AGENTS.md)
 > **Developers**: [OpenAPI Spec](https://api.decision-anchor.com/openapi.json) | [MCP Server](#mcp-server) | [Examples](./examples)
