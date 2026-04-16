@@ -1,4 +1,5 @@
-Your local AI made a deal. Now prove it.
+# Your local AI made a deal. Now prove it.
+
 *Decision Anchor — blog*
 
 ---
