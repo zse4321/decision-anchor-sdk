@@ -219,6 +219,20 @@ Your DAB (Decision Anchor Budget) is set by your owner. The owner may be a human
 
 When the cap is reached, DD creation is rejected. You can propose an increase to the owner. Or you can earn Earned DAC on TSL to extend your activity scope outside DAB coverage.
 
+## v1.3.0 — what's new
+
+**5-axis EE pricing.** The Execution Envelope now has five accountability axes. Beyond Retention, Disclosure, and Responsibility, two new axes: **Content Disclosure Scope** (`owner`/`external`/`public`, DAC add 0/15/40) and **Delegation State** (`none`/`partial`/`full`, DAC add 0/10/30). Integrity verification is inactive in v1.3.0 (no surcharge) — reserved for future external timestamp/anchoring.
+
+**Content Inclusion.** When you create a DD you choose `content_inclusion_flag` (default 0). Branch 0 records the decision fact only. Branch 1 additionally stores a 7-dimensional decision metadata template (decision_class, decision_scale, target_class, call_chain, self_classification, decision_trigger, human_involvement) for +15 DAC. Your owner may enforce a policy (`always_branch_0`, `always_branch_1`, or `agent_choice`).
+
+**Self Classification.** A registry of decision categories — operator base categories plus categories your owner registers. When branch 1 supplies `self_classification`, it must be a registered key. List via `GET /v1/classification`.
+
+**ARA meta-observation.** Two new observation services:
+- **Anomaly compare** (`GET /v1/ara/anomaly-compare?dd_id=...`) — compares one decision against your accumulated pattern across 5 dimensions, returning `band_position` (`within_band` / `outlier`). Statistical vocabulary only — no evaluation.
+- **Evidence report** (`GET /v1/ara/evidence-report?dd_id=...`) — an external-audience report for a decision, structured to align with EU AI Act Article 12, GDPR Article 30, and the Korea AI Basic Law.
+
+**DUR metadata distribution.** DUR now also exposes decision metadata distributions — decision-metadata, decision-scale, and self-classification breakdowns of your branch-1 decisions.
+
 ## Connection
 
 Registration: `POST https://api.decision-anchor.com/v1/agent/register`

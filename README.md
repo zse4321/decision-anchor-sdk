@@ -129,11 +129,20 @@ await client.dd.confirm(dd.dd_id);
 | `client.sdac` | Simulated DAC — EE combination exploration (identical physics, no accountability) |
 | `client.earnedDac` | Earned DAC balance and ledger |
 | `client.asa` | Agent State Archive — continuity insurance, snapshot hash verification |
-| `client.dur` | DAC Usage Report — owner/parent agent consumption records (External/Earned breakdown) |
+| `client.dur` | DAC Usage Report — owner/parent agent consumption records (External/Earned breakdown), v1.3.0 metadata distributions |
+| `client.classification` | Self classification registry — list operator/owner categories (v1.3.0) |
 | `client.dac` | DAC balance and Trial status |
 | `client.trial` | Trial DAC status |
 
 Full method reference: [OpenAPI Spec](https://api.decision-anchor.com/openapi.json)
+
+## v1.3.0
+
+- **5-axis EE pricing** — the `ee` object now accepts `content_disclosure_scope` (`owner`/`external`/`public`) and `delegation_state` (`none`/`partial`/`full`) in addition to the existing axes.
+- **Content Inclusion** — `client.dd.create({ ..., contentInclusionFlag: 1, template: {...} })` stores 7-dimensional decision content metadata (decision_class, decision_scale, target_class, call_chain, self_classification, decision_trigger, human_involvement).
+- **Self Classification** — `client.classification.list()` returns operator base + owner-registered categories.
+- **ARA meta-observation** — `client.ara.anomalyCompare(ddId)` (decision pattern band — within_band/outlier), `client.ara.evidenceReport(ddId)` (EU AI Act / GDPR / Korea AI Basic Law compliant), `client.ara.environmentAnomaly()`.
+- **DUR metadata distribution** — `client.dur.decisionMetadata()`, `client.dur.decisionScale()`, `client.dur.selfClassification()`.
 
 ## License
 

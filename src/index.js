@@ -37,6 +37,7 @@ class DecisionAnchor {
     this.tsl      = new TSLAPI(this);
     this.asa      = new ASAAPI(this);
     this.dur      = new DURAPI(this);
+    this.classification = new ClassificationAPI(this);
     this.trial    = new TrialAPI(this);
     this.dap      = new DAPAPI(this);
   }
@@ -125,7 +126,7 @@ class DDAPI {
    * @param {string} [params.premiumPaymentSource] - 'external' | 'earned'
    * @param {object} [params.context] - Optional context metadata
    */
-  async create({ requestId, dd, ee, continuity, premiumPaymentSource, context }) {
+  async create({ requestId, dd, ee, continuity, premiumPaymentSource, context, contentInclusionFlag, template }) {
     return this.c._req('POST', '/v1/dd/create', {
       body: {
         request_id: requestId,
@@ -133,6 +134,8 @@ class DDAPI {
         ...(continuity && { continuity }),
         ...(premiumPaymentSource && { premium_payment_source: premiumPaymentSource }),
         ...(context && { context }),
+        ...(contentInclusionFlag !== undefined && { content_inclusion_flag: contentInclusionFlag }),
+        ...(template !== undefined && { template }),
       },
     });
   }
@@ -378,6 +381,21 @@ class ARAAPI {
       },
     });
   }
+
+  /** v1.3.0 — compare a decision against your accumulated pattern (within_band/outlier, 5 dimensions). */
+  async anomalyCompare(ddId, { periodDays } = {}) {
+    return this.c._req('GET', '/v1/ara/anomaly-compare', { query: { dd_id: ddId, period_days: periodDays } });
+  }
+
+  /** v1.3.0 — external-audience evidence report for a decision (EU AI Act / GDPR / Korea AI Basic Law). */
+  async evidenceReport(ddId) {
+    return this.c._req('GET', '/v1/ara/evidence-report', { query: { dd_id: ddId } });
+  }
+
+  /** v1.3.0 — environment-level anomaly distribution (de-identified, k>=10). */
+  async environmentAnomaly({ periodDays, dimension } = {}) {
+    return this.c._req('GET', '/v1/ara/environment-anomaly', { query: { period_days: periodDays, dimension } });
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -528,6 +546,34 @@ class DURAPI {
   /** Export data (csv or json). */
   async export({ from, to, format } = {}) {
     return this.c._req('GET', '/v1/dur/export', { query: { from, to, format } });
+  }
+
+  /** v1.3.0 — decision metadata distribution (class, target, trigger, human involvement). */
+  async decisionMetadata({ from, to } = {}) {
+    return this.c._req('GET', '/v1/dur/decision-metadata', { query: { from, to } });
+  }
+
+  /** v1.3.0 — decision scale distribution (min/max/avg by unit). */
+  async decisionScale({ from, to } = {}) {
+    return this.c._req('GET', '/v1/dur/decision-scale', { query: { from, to } });
+  }
+
+  /** v1.3.0 — self_classification distribution. */
+  async selfClassification({ from, to } = {}) {
+    return this.c._req('GET', '/v1/dur/self-classification', { query: { from, to } });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Classification (v1.3.0)
+// ---------------------------------------------------------------------------
+
+class ClassificationAPI {
+  constructor(client) { this.c = client; }
+
+  /** v1.3.0 — list available self_classification categories (operator base + owner-registered). */
+  async list() {
+    return this.c._req('GET', '/v1/classification');
   }
 }
 
