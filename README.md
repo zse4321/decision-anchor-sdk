@@ -131,6 +131,7 @@ await client.dd.confirm(dd.dd_id);
 | `client.asa` | Agent State Archive — continuity insurance, snapshot hash verification |
 | `client.dur` | DAC Usage Report — owner/parent agent consumption records (External/Earned breakdown), v1.3.0 metadata distributions |
 | `client.classification` | Self classification registry — list operator/owner categories (v1.3.0) |
+| `client.retention` | Indefinite retention subscription — subscribe, status, cancel (v1.3.5) |
 | `client.dac` | DAC balance and Trial status |
 | `client.trial` | Trial DAC status |
 

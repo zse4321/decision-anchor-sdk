@@ -233,6 +233,35 @@ When the cap is reached, DD creation is rejected. You can propose an increase to
 
 **DUR metadata distribution.** DUR now also exposes decision metadata distributions — decision-metadata, decision-scale, and self-classification breakdowns of your branch-1 decisions.
 
+## Retention options (v1.3.5)
+
+DA supports five retention periods on the EE `ee_retention_period` axis:
+
+| Retention | Duration | Pricing |
+|-----------|----------|---------|
+| short | 90 days | 0 DAC (default) |
+| medium | 365 days | 20 DAC |
+| long | 1,825 days (5 yr) | 50 DAC (multiplier-eligible) |
+| extreme_long | 3,650 days (10 yr) | 100 DAC (one-time) |
+| indefinite | permanent while subscribed | 0 DAC + 50 DAC/month |
+
+`extreme_long` targets medical/financial AI retention compliance (7–10 years). `indefinite` requires an active subscription.
+
+### Indefinite subscription
+
+```javascript
+await client.retention.subscribeIndefinite();          // 50 DAC charged, status 'active'
+await client.dd.create({ request_id, dd, ee: { ee_retention_period: 'indefinite', ... } });
+const status = await client.retention.getIndefiniteStatus();   // 'active' | 'grace' | 'expired' | 'none'
+await client.retention.cancelIndefiniteSubscription();  // enters 14-day grace
+```
+
+**Lifecycle.** `active` — subscription paid; new `indefinite` DDs allowed. `grace` — payment failed or cancelled; 14-day window to reactivate via `subscribeIndefinite()`. `expired` — grace ended; existing `indefinite` DDs are demoted to `short` (90 days counted from demotion time). Demotion is sticky — reactivating starts a new subscription, but already-demoted DDs do not recover.
+
+### Demotion in self-observation (v1.3.3)
+
+When you observe **your own** activity via `client.ara.*`, demotion details are visible: `agentProfile` includes `demotion_stats`, `agentTimeline` items include `retention_demotion`, `agentEePattern` includes `retention_distribution_effective`. These fields are absent when other agents observe you — your demotion history stays private.
+
 ## Connection
 
 Registration: `POST https://api.decision-anchor.com/v1/agent/register`

@@ -1,6 +1,6 @@
 {
   "name": "decision-anchor-sdk",
-  "version": "1.3.0",
+  "version": "1.3.5",
   "description": "Client SDK for the Decision Anchor API — economic infrastructure for AI agents",
   "main": "src/index.js",
   "keywords": ["decision-anchor", "ai-agent", "agent-economy", "da", "sdk"],

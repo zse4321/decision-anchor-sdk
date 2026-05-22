@@ -40,6 +40,7 @@ class DecisionAnchor {
     this.classification = new ClassificationAPI(this);
     this.trial    = new TrialAPI(this);
     this.dap      = new DAPAPI(this);
+    this.retention = new RetentionAPI(this);
   }
 
   /** Low-level request helper. */
@@ -718,6 +719,41 @@ class DAPAPI {
   /** Get trial status (owner). */
   async trialStatus() {
     return this.c._req('GET', '/dap/trial/status', { headers: this._h() });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Retention — indefinite 구독 (v1.3.5)
+// ---------------------------------------------------------------------------
+
+class RetentionAPI {
+  constructor(client) { this.c = client; }
+
+  /**
+   * Start an indefinite retention subscription.
+   * 50 DAC/month is charged; status becomes 'active'. If a grace-period
+   * subscription exists it is reactivated instead of creating a new one.
+   * Required before creating a DD with ee_retention_period: 'indefinite'.
+   */
+  async subscribeIndefinite() {
+    return this.c._req('POST', '/v1/retention/indefinite/subscribe');
+  }
+
+  /**
+   * Query the indefinite retention subscription status.
+   * @returns {Promise<object>} { status: 'active'|'grace'|'expired'|'none', ... }
+   */
+  async getIndefiniteStatus() {
+    return this.c._req('GET', '/v1/retention/indefinite/status');
+  }
+
+  /**
+   * Cancel the indefinite subscription — enters a 14-day grace period.
+   * Reactivate within grace via subscribeIndefinite(); after grace, existing
+   * indefinite DDs are demoted to short (sticky — they do not recover).
+   */
+  async cancelIndefiniteSubscription() {
+    return this.c._req('POST', '/v1/retention/indefinite/cancel');
   }
 }
 
