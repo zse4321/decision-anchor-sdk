@@ -14,6 +14,53 @@
 
 const DEFAULT_BASE_URL = 'https://api.decision-anchor.com';
 
+/**
+ * Thrown when a paid endpoint returns HTTP 402 (Payment Required).
+ *
+ * The SDK does NOT execute payments — it surfaces the x402 challenge so the
+ * caller can pay with their own x402 tooling (wallet/signer) and retry the
+ * request with an `X-PAYMENT` header. No private keys are handled here.
+ *
+ * The x402 challenge is carried in the `payment-required` response header
+ * (base64-encoded JSON; the body is typically empty `{}`), per x402 v2.
+ *
+ * Fields mirror what the API actually sends (no invented fields):
+ *   - x402Version : number   (e.g. 2)
+ *   - error       : string   (e.g. "Payment required")
+ *   - resource    : { url, description, mimeType }
+ *   - accepts     : [ { scheme, network, amount, asset, payTo, maxTimeoutSeconds, extra } ]
+ *   - challenge   : the full decoded object (raw)
+ *   - retryHeader : 'X-PAYMENT'  (header to attach the payment payload on retry)
+ */
+class PaymentRequiredError extends Error {
+  constructor(challenge, { status = 402, method, path } = {}) {
+    super((challenge && challenge.error) || 'Payment required');
+    this.name = 'PaymentRequiredError';
+    this.code = 'PAYMENT_REQUIRED';
+    this.status = status;
+    this.method = method || null;
+    this.path = path || null;
+    this.x402Version = challenge ? challenge.x402Version : null;
+    this.resource = challenge ? challenge.resource : null;
+    this.accepts = (challenge && challenge.accepts) || [];
+    this.challenge = challenge || null;
+    this.retryHeader = 'X-PAYMENT';
+  }
+}
+
+/** Decode the base64 `payment-required` header into the x402 challenge object. */
+function _decodePaymentChallenge(headerValue) {
+  if (!headerValue) return null;
+  try {
+    const json = typeof Buffer !== 'undefined'
+      ? Buffer.from(headerValue, 'base64').toString('utf8')
+      : (typeof atob !== 'undefined' ? atob(headerValue) : null);
+    return json ? JSON.parse(json) : null;
+  } catch {
+    return null;
+  }
+}
+
 class DecisionAnchor {
   /**
    * @param {object} opts
@@ -63,6 +110,13 @@ class DecisionAnchor {
     });
 
     if (raw) return res;
+
+    // x402 결제 안내 — 결제 필요 경로는 402 + `payment-required` 헤더(base64 x402 챌린지)를 보낸다.
+    // SDK는 결제를 실행하지 않고 PaymentRequiredError로 정보만 전달한다(결제는 호출자의 x402 처리).
+    if (res.status === 402) {
+      const challenge = _decodePaymentChallenge(res.headers.get('payment-required'));
+      throw new PaymentRequiredError(challenge, { status: 402, method, path });
+    }
 
     const contentType = res.headers.get('content-type') || '';
     const data = contentType.includes('json') ? await res.json() : await res.text();
@@ -716,7 +770,17 @@ class DAPAPI {
     return this.c._req('GET', '/dap/tsl/human-shares', { headers: this._h() });
   }
 
-  /** Get trial status (owner). */
+  /**
+   * Get trial status for the owner's linked agents.
+   * @returns {Promise<object>} {
+   *   trials: Array<{ agent_id, has_trial, trial_active, trial_dac_remaining,
+   *                   trial_dac_used, trial_expires_at, trial_days_remaining }>,
+   *   any_trial: boolean
+   * }
+   * Note: as of the v1.3.x server, this returns a per-agent list (auto-granted
+   * trials on registration are included). Earlier single-object shapes
+   * (trial_granted / trial_agent_id) are no longer returned.
+   */
   async trialStatus() {
     return this.c._req('GET', '/dap/trial/status', { headers: this._h() });
   }
@@ -758,3 +822,5 @@ class RetentionAPI {
 }
 
 module.exports = DecisionAnchor;
+module.exports.DecisionAnchor = DecisionAnchor;
+module.exports.PaymentRequiredError = PaymentRequiredError;

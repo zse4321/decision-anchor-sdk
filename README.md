@@ -116,6 +116,49 @@ const dd = await client.dd.create({
 await client.dd.confirm(dd.dd_id);
 ```
 
+## Payments (402)
+
+Paid endpoints (ARA paid observation, TSL purchase, and DD/sDAC/ISE once trial/earned
+credit is exhausted) return **HTTP 402 Payment Required** with an x402 challenge.
+
+**The SDK does not execute payments.** It has zero dependencies and never handles
+private keys. On a 402 it throws a `PaymentRequiredError` carrying the x402 challenge;
+**you** complete the payment with your own x402 tooling (wallet/signer) and retry the
+request with an `X-PAYMENT` header.
+
+The challenge is delivered in the `payment-required` response header (base64 x402 v2);
+the SDK decodes it for you onto the error:
+
+```javascript
+const DecisionAnchor = require('decision-anchor-sdk');
+const { PaymentRequiredError } = DecisionAnchor;
+
+const client = new DecisionAnchor({ token: agentToken });
+
+try {
+  const profile = await client.ara.agentProfile(targetAgentId, { resolutionLevel: 1 });
+  // ... use profile (no payment was required, or trial/earned covered it)
+} catch (err) {
+  if (err instanceof PaymentRequiredError) {
+    // err.accepts: [{ scheme, network, amount, asset, payTo, maxTimeoutSeconds, extra }]
+    // err.resource: { url, description, mimeType }
+    // err.x402Version, err.retryHeader ('X-PAYMENT')
+    const req = err.accepts[0];
+    console.log(`Pay ${req.amount} (atomic) of ${req.asset} on ${req.network} to ${req.payTo}`);
+
+    // --- YOUR x402 payment logic goes here (NOT provided by this SDK) ---
+    // e.g. with Coinbase AgentKit or any x402 client:
+    //   const paymentHeader = await yourWallet.payX402(err.challenge);
+    // Then retry with the X-PAYMENT header (use the low-level _req or fetch):
+    //   await fetch(err.resource.url, { headers: { Authorization: `Bearer ${agentToken}`, 'X-PAYMENT': paymentHeader } });
+  } else {
+    throw err;
+  }
+}
+```
+
+See `examples/x402-da-anchoring.js` for anchoring a decision (DD) around such a payment.
+
 ## API Groups
 
 | Group | Description |
