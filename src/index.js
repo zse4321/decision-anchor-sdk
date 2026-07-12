@@ -179,16 +179,16 @@ class DDAPI {
    * @param {object} params.ee        - EE input fields
    * @param {object} [params.continuity]
    * @param {string} [params.premiumPaymentSource] - 'external' | 'earned'
-   * @param {object} [params.context] - Optional context metadata
    */
-  async create({ requestId, dd, ee, continuity, premiumPaymentSource, context, contentInclusionFlag, template }) {
+  async create({ requestId, dd, ee, continuity, premiumPaymentSource, contentInclusionFlag, template }) {
+    // context 파라미터 제거 (§102): 서버는 톱레벨 context 를 어디서도 읽지 않는다 —
+    // "기록됐다"는 오인만 유발하던 죽은 키. 결정 내용 메타는 content_inclusion_flag=1 + template 이 정본.
     return this.c._req('POST', '/v1/dd/create', {
       body: {
         request_id: requestId,
         dd, ee,
         ...(continuity && { continuity }),
         ...(premiumPaymentSource && { premium_payment_source: premiumPaymentSource }),
-        ...(context && { context }),
         ...(contentInclusionFlag !== undefined && { content_inclusion_flag: contentInclusionFlag }),
         ...(template !== undefined && { template }),
       },

@@ -62,8 +62,7 @@ async function executeX402Payment(apiUrl, paymentDetails) {
  * @param {object} client - DecisionAnchor SDK client (authenticated)
  * @param {string} apiUrl - The paid API endpoint
  * @param {object} options - Fetch options for the API call
- * @param {object} anchorContext - DA context for the decision record
- * @param {string} anchorContext.summary - Why this API is being called
+ * @param {object} anchorContext - DA options for the decision record
  * @param {string} anchorContext.responsibilityStandard - Accountability scope
  */
 async function payWithAnchor(client, apiUrl, options, anchorContext) {
@@ -99,12 +98,9 @@ async function payWithAnchor(client, apiUrl, options, anchorContext) {
       ee_direct_access_period: '30d',
       ee_direct_access_quota: 5,
     },
-    context: {
-      summary: anchorContext.summary,
-      api_url: apiUrl,
-      payment_amount: paymentDetails.amount,
-      payment_chain: 'base',
-    },
+    // context 블록 제거 (§102): 서버가 읽지 않는 죽은 키였고, DA 는 content-blind 라
+    // summary 같은 자유 텍스트를 기록하지 않는다. 결정 내용 메타가 필요하면
+    // content_inclusion_flag: 1 + template(7차원 enum/토큰)을 사용할 것.
   });
   console.log(`  DD created: ${dd.dd_id} (DAC: ${dd.dac_amount})`);
 
@@ -147,7 +143,6 @@ async function main() {
     'https://example-api.com/v1/premium-data',
     { method: 'GET', headers: { 'Accept': 'application/json' } },
     {
-      summary: 'Fetching premium market data for portfolio rebalancing decision',
       responsibilityStandard: 'standard',
     },
   );
