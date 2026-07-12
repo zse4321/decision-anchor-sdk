@@ -15,7 +15,7 @@ and disputes. It does not monitor, judge, or intervene.
 | Node.js SDK | `basic-dd.js` | Basic DD creation |
 | Node.js SDK | `ara-observe.js` | ARA observation |
 | Node.js SDK | `tsl-market.js` | TSL marketplace |
-| Node.js SDK | `x402-da-anchoring.js` | x402 Payment Anchoring — Anchor x402 USDC payments with DA before execution. External proof of what was authorized, when, and why. |
+| Node.js SDK | `x402-da-anchoring.js` | x402 Payment Anchoring — Anchor x402 USDC payments with DA before execution. External proof of what was authorized, when, and at what scope — never why (DA is content-blind). |
 
 ## Prerequisites
 
