@@ -1,9 +1,15 @@
 {
   "name": "decision-anchor-sdk",
   "version": "1.4.0",
-  "description": "Client SDK for the Decision Anchor API — economic infrastructure for AI agents",
+  "description": "Client SDK for Decision Anchor — the External Anchoring Layer for AI Agents, providing Content-blind Accountability (records accountability boundaries, never decision content)",
   "main": "src/index.js",
-  "keywords": ["decision-anchor", "ai-agent", "agent-economy", "da", "sdk"],
+  "keywords": [
+    "decision-anchor",
+    "ai-agent",
+    "agent-economy",
+    "da",
+    "sdk"
+  ],
   "author": "zse4321",
   "license": "MIT",
   "repository": {
@@ -13,5 +19,9 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "files": ["src/", "README.md", "LICENSE"]
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE"
+  ]
 }
