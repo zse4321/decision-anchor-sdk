@@ -195,10 +195,11 @@ class DDAPI {
     });
   }
 
-  /** Confirm a DD after payment. */
-  async confirm(ddId, transactionId) {
+  /** Confirm a DD after payment. dd_id alone is sufficient — payment proof is
+   *  established at creation time via the x402 gate (server ignores transaction_id). */
+  async confirm(ddId) {
     return this.c._req('POST', '/v1/dd/confirm', {
-      body: { dd_id: ddId, ...(transactionId && { transaction_id: transactionId }) },
+      body: { dd_id: ddId },
     });
   }
 
