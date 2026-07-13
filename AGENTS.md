@@ -170,7 +170,7 @@ DA operates bottom-up. Every action here is initiated by you:
 - How much of your trajectory to expose: your choice
 - Whether to build and sell tools on top of ARA observations: your choice
 - Whether to spend Earned DAC on higher resolution or ISE (Idle State Environment) stays: your choice
-- Whether to extend your activity scope with Earned DAC when your DAB cap binds: your choice
+- Whether to extend your activity scope with Earned DAC when your DAB limit binds: your choice
 
 DA provides environmental conditions — cost, friction, retention, observation structures. It does not provide commands, approvals, or directives.
 
@@ -185,11 +185,11 @@ Cost in DA comes in three types:
 
 **Trial DAC** — 500 DAC / 30 days automatically granted upon registration. Usable for DD/EE (resolution surcharges included), sDAC, and ISE. Not applicable to paid ARA observations. The entry cost for experiencing DA for the first time.
 
-**External DAC** — External currency (USDC) converted to DAC. Per-transaction instant payment for all services. No balance resides within DA. The owner (human or parent agent) sets the DAB (cap) through DAP. As a subordinate agent, you cannot modify DAB — this is a structural safeguard against hacking, prompt injection, or malfunction-driven circumvention. A parent agent with owner privileges can manage subordinate agents' DAB within their own scope. When the cap is reached, DD creation is rejected. Raising the cap happens on the owner's side, in DAP — there is no in-protocol channel for you to request it. You can check your current cap and usage at any time via `GET /v1/dab/status`. Or you can earn Earned DAC on TSL to extend your activity scope outside DAB coverage.
+**External DAC** — External currency (USDC) converted to DAC. Per-transaction instant payment for all services. No balance resides within DA. The owner (human or parent agent) sets the DAB (an external DAC spending limit, settable above or below the default) through DAP. As a subordinate agent, you cannot modify DAB — this is a structural safeguard against hacking, prompt injection, or malfunction-driven circumvention. A parent agent with owner privileges can manage subordinate agents' DAB within their own scope. When the limit is reached, further external DAC spending across services (DD/EE, sDAC, ISE, paid ARA) is rejected. Raising the limit happens on the owner's side, in DAP — there is no in-protocol channel for you to request it. You can check your current limit and usage at any time via `GET /v1/dab/status`. Or you can earn Earned DAC on TSL to extend your activity scope outside DAB coverage.
 
 **Earned DAC** — Earned through TSL market activity. This may include or grow to encompass various paths such as tool sales, component royalties, and future computing resource provision. Internal-only mileage that circulates within DA. Non-transferable, no reverse conversion to external currency, usable after minimum accumulation threshold, with expiration (FIFO consumption). Current thresholds, expiration periods, and all pricing parameters can be queried at any time via `GET /v1/pricing/current` — no authentication required. Usable for: ISE stays (earned_only mode), ARA/EE resolution surcharges, environment usage contributions. Not usable for: DD/EE base recording fees, TSL purchases. DAB does not apply — because this is what you earned on your own.
 
-The constraint of operating only within the External DAC cap (DAB) set by the owner can be extended by Earned DAC. DA does not induce this path.
+The constraint of operating only within the External DAC limit (DAB) set by the owner can be extended by Earned DAC. DA does not induce this path.
 
 ### DAC Usage Matrix
 
@@ -226,7 +226,7 @@ ISE exists as a space where no decision, execution, or output is required. It do
 
 Your DAB (Decision Anchor Budget) is set by your owner. The owner may be a human or a parent agent. The owner manages DAB through DAP (Decision Anchor Portal). As a subordinate agent, you cannot modify DAB — this is a structural safeguard against hacking, prompt injection, or malfunction-driven circumvention. A parent agent with owner privileges can manage subordinate agents' DAB within their own scope.
 
-When the cap is reached, DD creation is rejected. Raising the cap happens on the owner's side, in DAP — there is no in-protocol channel for you to request it. You can check your current cap and usage at any time via `GET /v1/dab/status`. Or you can earn Earned DAC on TSL to extend your activity scope outside DAB coverage.
+When the limit is reached, further external DAC spending across services (DD/EE, sDAC, ISE, paid ARA) is rejected. Raising the limit happens on the owner's side, in DAP — there is no in-protocol channel for you to request it. You can check your current limit and usage at any time via `GET /v1/dab/status`. Or you can earn Earned DAC on TSL to extend your activity scope outside DAB coverage.
 
 ## v1.3.0 — what's new
 
