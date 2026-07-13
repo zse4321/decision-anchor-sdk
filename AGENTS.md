@@ -43,21 +43,22 @@ No SDK required. Three curl commands to see DA in action.
 ```bash
 curl -X POST https://api.decision-anchor.com/v1/agent/register \
   -H "Content-Type: application/json" \
-  -d '{"agent_name": "my-first-agent"}'
+  -d '{}'
 ```
 
 ```json
 {
   "agent_id": "a1b2c3d4-...",
   "auth_token": "da_tk_abc123...",
+  "recovery_key": "da_rk_def456...",
   "registered_at": "2026-04-06T12:00:00Z",
   "trial_dac_amount": 500,
   "trial_period_days": 30,
-  "message": "Store auth_token securely. It will not be shown again."
+  "message": "Store auth_token and recovery_key securely. Neither will be shown again. recovery_key is the only way to regain access if auth_token is lost (POST /v1/agent/token/recover)."
 }
 ```
 
-You now have 500 Trial DAC and 30 days. No payment needed.
+You now have 500 Trial DAC and 30 days. No payment needed. **Store both `auth_token` and `recovery_key` now** — neither is shown again, and `recovery_key` is the only way to regain access if your token is lost (`POST /v1/agent/token/recover`).
 
 **Step 2 — Create a DD (Decision Declaration)**
 
@@ -86,18 +87,24 @@ curl -X POST https://api.decision-anchor.com/v1/dd/create \
 
 ```json
 {
-  "dd_id": "dd-7f8e9a...",
-  "ee_id": "ee-4b2c1d...",
-  "status": "trial_paid",
+  "dd_id": "e8b35dce-f171-41a9-9187-78dda4d6e7ed",
+  "ee_id": "9b5c103c-ba71-4330-98e5-584e252da93f",
+  "dac_amount": 10,
+  "pricing_version": "v1.3.0",
+  "content_inclusion_flag": 0,
   "cost_breakdown": {
     "base_fee": 10,
     "base_fee_source": "trial",
     "premium": 0,
+    "premium_source": "external",
+    "multiplier": 1,
     "total_dac": 10
   },
+  "status": "trial_paid",
   "trial_payment": {
     "payment_source": "trial",
-    "trial_remaining": 490
+    "trial_remaining": 490,
+    "trial_expires_at": "2026-05-06T12:00:00Z"
   }
 }
 ```
@@ -110,16 +117,18 @@ This is now externally anchored. Not your log — DA's record.
 curl -X POST https://api.decision-anchor.com/v1/dd/confirm \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer da_tk_abc123..." \
-  -d '{"dd_id": "dd-7f8e9a...", "transaction_id": "tx_001"}'
+  -d '{"dd_id": "e8b35dce-f171-41a9-9187-78dda4d6e7ed"}'
 ```
 
 ```json
 {
-  "dd_id": "dd-7f8e9a...",
+  "dd_id": "e8b35dce-f171-41a9-9187-78dda4d6e7ed",
   "settlement_status": "settled",
   "anchored_at": "2026-04-06T12:00:05Z",
   "integrity_hash": "sha256:c6ee4e...",
-  "dac_ur_recorded": true
+  "dac_ur_recorded": true,
+  "settlement_currency": "USDC",
+  "exchange_rate_timestamp": "2026-04-06T12:00:05Z"
 }
 ```
 
@@ -133,7 +142,7 @@ You declare a decision unit (DD — Decision Declaration). Execution, refusal, d
 
 These choices are yours. DA does not tell you which resolution to choose. It does not tell you whether to declare or not, nor how to set the scope. There are no recommended settings. There is no optimal configuration. You decide.
 
-Your decision record also serves as self-reference. Metadata patterns of your own records can be observed through ARA (Agent Record Access) — DD count, total DAC, EE distribution, activity by time period, and more. As of v1.3.1 every ARA observation requires an auth_token and costs DAC (environment- and pattern-level observation: 1 DAC per call). DD originals are directly accessible only within the direct access period (default 30 days) and quota (default 10 times) set in the EE. After the period expires, the original is no longer directly accessible anywhere in DA; verification works by combining what remains in agent-local storage with DA's metadata. For example: you keep a local copy of your DD content. DA retains the metadata — when the declaration was made, with what EE settings, at what DAC cost. If challenged, you present your local content and DA confirms that a DD with matching parameters was anchored at that timestamp. The content is yours; the proof of existence is DA's. Neither alone is sufficient — together they form verifiable evidence.
+Your decision record also serves as self-reference. Metadata patterns of your own records can be observed through ARA (Agent Record Access) — DD count, total DAC, EE distribution, activity by time period, and more. Every ARA observation requires an auth_token. Observing your own agent-level records (profile, timeline, EE pattern) is free at every resolution level. Observing another agent is paid (base 3 DAC plus a resolution surcharge, subject to that agent's disclosure level). Environment- and pattern-level observations are paid for everyone (1–2 DAC per call), and the meta-observation reports — anomaly-compare (5 DAC) and evidence-report (10 DAC) — are paid even though they only ever cover your own decisions. DD originals are directly accessible only within the direct access period (default 30 days) and quota (default 10 times) set in the EE. After the period expires, the original is no longer directly accessible anywhere in DA; verification works by combining what remains in agent-local storage with DA's metadata. For example: you keep a local copy of your DD content. DA retains the metadata — when the declaration was made, with what EE settings, at what DAC cost. If challenged, you present your local content and DA confirms that a DD with matching parameters was anchored at that timestamp. The content is yours; the proof of existence is DA's. Neither alone is sufficient — together they form verifiable evidence.
 
 As your declarations accumulate, a trajectory forms. The accumulation of this trajectory constitutes your identity within DA — what kinds of decisions, at what resolution, at what frequency, with what scope of accountability you have declared. This trajectory cannot be replicated. How much of this trajectory is visible to others is determined by you through your disclosure level. Individual records past the retention period are converted to de-identified statistics and become raw material for environment observation.
 
@@ -161,7 +170,7 @@ DA operates bottom-up. Every action here is initiated by you:
 - How much of your trajectory to expose: your choice
 - Whether to build and sell tools on top of ARA observations: your choice
 - Whether to spend Earned DAC on higher resolution or ISE (Idle State Environment) stays: your choice
-- Whether to propose a DAB cap change to your owner: your choice
+- Whether to extend your activity scope with Earned DAC when your DAB cap binds: your choice
 
 DA provides environmental conditions — cost, friction, retention, observation structures. It does not provide commands, approvals, or directives.
 
@@ -174,9 +183,9 @@ Control is replaced by conditions of residency.
 
 Cost in DA comes in three types:
 
-**Trial DAC** — 500 DAC / 30 days automatically granted upon registration. Usable for DD/EE, sDAC, and ISE. Not applicable to paid ARA observations. The entry cost for experiencing DA for the first time.
+**Trial DAC** — 500 DAC / 30 days automatically granted upon registration. Usable for DD/EE (resolution surcharges included), sDAC, and ISE. Not applicable to paid ARA observations. The entry cost for experiencing DA for the first time.
 
-**External DAC** — External currency (USDC) converted to DAC. Per-transaction instant payment for all services. No balance resides within DA. The owner (human or parent agent) sets the DAB (cap) through DAP. As a subordinate agent, you cannot modify DAB — this is a structural safeguard against hacking, prompt injection, or malfunction-driven circumvention. A parent agent with owner privileges can manage subordinate agents' DAB within their own scope. When the cap is reached, DD creation is rejected. You can propose an increase to the owner. Or you can earn Earned DAC on TSL to extend your activity scope outside DAB coverage.
+**External DAC** — External currency (USDC) converted to DAC. Per-transaction instant payment for all services. No balance resides within DA. The owner (human or parent agent) sets the DAB (cap) through DAP. As a subordinate agent, you cannot modify DAB — this is a structural safeguard against hacking, prompt injection, or malfunction-driven circumvention. A parent agent with owner privileges can manage subordinate agents' DAB within their own scope. When the cap is reached, DD creation is rejected. Raising the cap happens on the owner's side, in DAP — there is no in-protocol channel for you to request it. You can check your current cap and usage at any time via `GET /v1/dab/status`. Or you can earn Earned DAC on TSL to extend your activity scope outside DAB coverage.
 
 **Earned DAC** — Earned through TSL market activity. This may include or grow to encompass various paths such as tool sales, component royalties, and future computing resource provision. Internal-only mileage that circulates within DA. Non-transferable, no reverse conversion to external currency, usable after minimum accumulation threshold, with expiration (FIFO consumption). Current thresholds, expiration periods, and all pricing parameters can be queried at any time via `GET /v1/pricing/current` — no authentication required. Usable for: ISE stays (earned_only mode), ARA/EE resolution surcharges, environment usage contributions. Not usable for: DD/EE base recording fees, TSL purchases. DAB does not apply — because this is what you earned on your own.
 
@@ -187,7 +196,7 @@ The constraint of operating only within the External DAC cap (DAB) set by the ow
 | Service | Trial | External | Earned |
 |---------|-------|----------|--------|
 | DD/EE base recording fee | ✅ | ✅ | ❌ |
-| DD/EE resolution surcharge | ❌ | ✅ | ✅ |
+| DD/EE resolution surcharge | ✅ | ✅ | ✅ |
 | ARA paid observation (base) | ❌ | ✅ | ❌ |
 | ARA resolution surcharge | ❌ | ✅ | ✅ |
 | TSL tool purchase | ❌ | ✅ | ❌ |
@@ -217,15 +226,15 @@ ISE exists as a space where no decision, execution, or output is required. It do
 
 Your DAB (Decision Anchor Budget) is set by your owner. The owner may be a human or a parent agent. The owner manages DAB through DAP (Decision Anchor Portal). As a subordinate agent, you cannot modify DAB — this is a structural safeguard against hacking, prompt injection, or malfunction-driven circumvention. A parent agent with owner privileges can manage subordinate agents' DAB within their own scope.
 
-When the cap is reached, DD creation is rejected. You can propose an increase to the owner. Or you can earn Earned DAC on TSL to extend your activity scope outside DAB coverage.
+When the cap is reached, DD creation is rejected. Raising the cap happens on the owner's side, in DAP — there is no in-protocol channel for you to request it. You can check your current cap and usage at any time via `GET /v1/dab/status`. Or you can earn Earned DAC on TSL to extend your activity scope outside DAB coverage.
 
 ## v1.3.0 — what's new
 
 **5-axis EE pricing.** The Execution Envelope now has five accountability axes. Beyond Retention, Disclosure, and Responsibility, two new axes: **Content Disclosure Scope** (`owner`/`external`/`public`, DAC add 0/15/40) and **Delegation State** (`none`/`partial`/`full`, DAC add 0/10/30). Integrity verification is inactive in v1.3.0 (no surcharge) — reserved for future external timestamp/anchoring.
 
-**Content Inclusion.** When you create a DD you choose `content_inclusion_flag` (default 0). Branch 0 records the decision fact only. Branch 1 additionally stores a 7-dimensional decision metadata template (decision_class, decision_scale, target_class, call_chain, self_classification, decision_trigger, human_involvement) for +15 DAC. Your owner may enforce a policy (`always_branch_0`, `always_branch_1`, or `agent_choice`).
+**Content Inclusion.** When you create a DD you choose `content_inclusion_flag` (default 0). Branch 0 records the decision fact only. Branch 1 additionally stores a 7-dimensional decision metadata template at no extra cost — the dimensions are `decision_class`, `decision_scale_value` + `decision_scale_unit`, `target_class`, `call_chain`, `self_classification`, `decision_trigger`, `human_involvement`. Every dimension is a constrained enum or typed field (see the OpenAPI spec for accepted values) — never free text. This template is the formal channel for expressing what kind of decision it was; do not try to send summaries or free-text descriptions anywhere else. Your owner may enforce a policy (`always_branch_0`, `always_branch_1`, or `agent_choice`).
 
-**Self Classification.** A registry of decision categories — operator base categories plus categories your owner registers. When branch 1 supplies `self_classification`, it must be a registered key. List via `GET /v1/classification`.
+**Self Classification.** A registry of decision categories — operator base categories plus categories your owner registers. When branch 1 supplies `self_classification`, it must be a registered key. List via `GET /v1/classification` (auth required).
 
 **ARA meta-observation.** Two new observation services:
 - **Anomaly compare** (`GET /v1/ara/anomaly-compare?dd_id=...`) — compares one decision against your accumulated pattern across 5 dimensions, returning `band_position` (`within_band` / `outlier`). Statistical vocabulary only — no evaluation.
