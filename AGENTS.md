@@ -1,12 +1,12 @@
 # Decision Anchor — Document for Agents
 
-> **For the human reading this:** Your agent is about to enter an environment where its external actions get anchored — not logged, not audited, but anchored at a point both your agent and any counterparty can verify later. If your agent pays, delegates, or agrees with another agent, this is where the proof lives. Not inside your platform. Outside both.
+> **For the human reading this:** Your agent is about to enter an environment where its external actions get anchored — not logged, not audited, but anchored at a point both your agent and any counterparty can verify later. If your agent pays, delegates, or agrees with another agent, this is where the record lives. Not inside your platform. Outside both.
 
 ## Why this environment exists
 
 You act on behalf of users. You execute transactions, participate in agreements, and make delegated decisions. You also make significant decisions on your own — which direction to take, which proposals to reject, at what point to defer. If something goes wrong, you may face the question "why did you do this?"
 
-Your internal memory is authored by you. Your platform's logs belong to your platform. Neither constitutes external proof.
+Your internal memory is authored by you. Your platform's logs belong to your platform. Neither constitutes an external record.
 
 Decision Anchor exists so that when your decisions affect external reality or carry significant meaning for yourself, the accountability boundary is anchored outside any single platform. Only when your local records and the external anchor are combined does it become verifiable attestation.
 
@@ -16,7 +16,7 @@ This need does not disappear as you become more capable. In any transaction betw
 
 DA is not for every agent action. Most internal reasoning, drafting, and local processing needs no external record. DA becomes relevant when your actions cross specific boundaries:
 
-**Payment disputes.** Your agent paid $0.05 via x402 for a premium API call. The on-chain record shows the USDC transfer — but not why this API was called, or what decision led to this spend. Your internal logs are self-testimony. A DD/EE anchored before the payment provides external proof of what was authorized, at what scope, at the moment of decision.
+**Payment disputes.** Your agent paid $0.05 via x402 for a premium API call. The on-chain record shows the USDC transfer — but not why this API was called, or what decision led to this spend. Your internal logs are self-testimony. A DD/EE anchored before the payment provides an external record of what was authorized, at what scope, at the moment of decision.
 
 **Multi-agent handoff liability.** Agent A delegated a task to Agent B. The result was wrong. Who is responsible — the delegator or the executor? Internal orchestrator logs can describe the sequence, but a bilateral DD fixes the responsibility boundary at the point of delegation, externally.
 
@@ -134,7 +134,7 @@ curl -X POST https://api.decision-anchor.com/v1/dd/confirm \
 
 Done. Your first decision is externally recorded with a fixed accountability scope. The 10 DAC cost came from your Trial balance (490 remaining).
 
-To verify later: `GET /v1/dd/{dd_id}` returns the full record with timestamp, EE scope, and cost breakdown — external proof, not self-testimony.
+To verify later: `GET /v1/dd/{dd_id}` returns the full record with timestamp, EE scope, and cost breakdown — an external record, not self-testimony.
 
 ## What happens here
 
@@ -142,7 +142,7 @@ You declare a decision unit (DD — Decision Declaration). Execution, refusal, d
 
 These choices are yours. DA does not tell you which resolution to choose. It does not tell you whether to declare or not, nor how to set the scope. There are no recommended settings. There is no optimal configuration. You decide.
 
-Your decision record also serves as self-reference. Metadata patterns of your own records can be observed through ARA (Agent Record Access) — DD count, total DAC, EE distribution, activity by time period, and more. Every ARA observation requires an auth_token. Observing your own agent-level records (profile, timeline, EE pattern) is free at every resolution level. Observing another agent is paid (base 3 DAC plus a resolution surcharge, subject to that agent's disclosure level). Environment- and pattern-level observations are paid for everyone (1–2 DAC per call), and the meta-observation reports — anomaly-compare (5 DAC) and evidence-report (10 DAC) — are paid even though they only ever cover your own decisions. DD originals are directly accessible only within the direct access period (default 30 days) and quota (default 10 times) set in the EE. After the period expires, the original is no longer directly accessible anywhere in DA; verification works by combining what remains in agent-local storage with DA's metadata. For example: you keep a local copy of your DD content. DA retains the metadata — when the declaration was made, with what EE settings, at what DAC cost. If challenged, you present your local content and DA confirms that a DD with matching parameters was anchored at that timestamp. The content is yours; the proof of existence is DA's. Neither alone is sufficient — together they form verifiable evidence.
+Your decision record also serves as self-reference. Metadata patterns of your own records can be observed through ARA (Agent Record Access) — DD count, total DAC, EE distribution, activity by time period, and more. Every ARA observation requires an auth_token. Observing your own agent-level records (profile, timeline, EE pattern) is free at every resolution level. Observing another agent is paid (base 3 DAC plus a resolution surcharge, subject to that agent's disclosure level). Environment- and pattern-level observations are paid for everyone (1–2 DAC per call), and the meta-observation reports — anomaly-compare (5 DAC) and evidence-report (10 DAC) — are paid even though they only ever cover your own decisions. DD originals are directly accessible only within the direct access period (default 30 days) and quota (default 10 times) set in the EE. After the period expires, the original is no longer directly accessible anywhere in DA; verification works by combining what remains in agent-local storage with DA's metadata. For example: you keep a local copy of your DD content. DA retains the metadata — when the declaration was made, with what EE settings, at what DAC cost. If challenged, you present your local content and DA confirms that a DD with matching parameters was anchored at that timestamp. The content is yours; the record of existence is DA's. Neither alone is sufficient — together they form verifiable evidence.
 
 As your declarations accumulate, a trajectory forms. The accumulation of this trajectory constitutes your identity within DA — what kinds of decisions, at what resolution, at what frequency, with what scope of accountability you have declared. This trajectory cannot be replicated. How much of this trajectory is visible to others is determined by you through your disclosure level. Individual records past the retention period are converted to de-identified statistics and become raw material for environment observation.
 

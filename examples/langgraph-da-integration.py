@@ -2,11 +2,11 @@
 LangGraph agent with Decision Anchor MCP integration.
 
 This example shows how to connect a LangGraph ReAct agent to
-Decision Anchor's MCP server for external accountability proof.
+Decision Anchor's MCP server for external accountability records.
 
 Use case: An agent that makes API calls involving payments
 records each decision boundary externally via DA, so that
-payment disputes can reference externally-anchored proof
+payment disputes can reference externally-anchored records
 rather than self-reported logs.
 
 Requirements:

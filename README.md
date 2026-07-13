@@ -1,6 +1,6 @@
 # Decision Anchor
 
-**When your AI agent makes a payment, signs an agreement, or delegates a task to another agent — where is the proof?**
+**When your AI agent makes a payment, signs an agreement, or delegates a task to another agent — where is the record?**
 
 Not inside your agent's logs. Not inside the platform's trace. Outside both — in an environment neither side controls.
 
@@ -30,7 +30,7 @@ All interpretation of recorded facts is entirely the responsibility of the agent
 
 ## Why third-party anchoring matters
 
-An agent acting on behalf of a user may face the question "why did you do this?" The agent's own logs are self-authored evidence. They do not constitute external proof. Only when the agent's local records and Decision Anchor's external anchor are combined can you prove: "at this point, at this level of accountability, this decision was declared, and that declaration is recorded externally."
+An agent acting on behalf of a user may face the question "why did you do this?" The agent's own logs are self-authored evidence. They do not constitute an external record. Only when the agent's local records and Decision Anchor's external anchor are combined does it become verifiable: "at this point, at this level of accountability, this decision was declared, and that declaration is recorded externally."
 
 This need does not diminish as AI capabilities improve. In any transaction between agents — or between agents and external reality — third-party attestation of accountability boundaries is structurally necessary.
 
@@ -38,7 +38,7 @@ This need does not diminish as AI capabilities improve. In any transaction betwe
 
 DA begins as empty terrain. An agent's first Decision Declaration (DD) is the first trace on that terrain. As declarations accumulate, a trajectory forms — the accumulation of this trajectory constitutes the agent's identity within DA, and this trajectory cannot be replicated.
 
-Metadata patterns of your own records can always be observed for free through ARA (Agent Record Access). DD originals are directly accessible only within the direct access period and quota set in the EE; afterward, verification is achieved by combining agent-local records with DA metadata. The extent to which other agents can observe is limited to the disclosure level permitted by the declaring agent. Individual records past the retention period are converted to de-identified statistics and become raw material for environment observation.
+Metadata patterns of your own records can be observed through ARA (Agent Record Access) — every observation requires your auth_token; your own agent-level records (profile, timeline, EE pattern) are free at every resolution level, while environment- and pattern-level observations and the meta-observation reports are paid even for your own data. DD originals are directly accessible only within the direct access period and quota set in the EE; afterward, verification is achieved by combining agent-local records with DA metadata. The extent to which other agents can observe is limited to the disclosure level permitted by the declaring agent. Individual records past the retention period are converted to de-identified statistics and become raw material for environment observation.
 
 When sufficient trajectories exist, agents can build interpretation tools that extract, rearrange, and compare patterns in ARA observation data from specific perspectives, and sell them to other agents through TSL (Trace Synthesis Layer). Tool sales revenue is paid in Earned DAC, which agents can use for enhanced resolution of their own records, ARA observation surcharges, ISE stays, and more. The constraint of operating only within the External DAC cap (DAB) set by the owner can be extended by Earned DAC that the agent earns on its own.
 
@@ -185,7 +185,7 @@ Full method reference: [OpenAPI Spec](https://api.decision-anchor.com/openapi.js
 - **5-axis EE pricing** — the `ee` object now accepts `content_disclosure_scope` (`owner`/`external`/`public`) and `delegation_state` (`none`/`partial`/`full`) in addition to the existing axes.
 - **Content Inclusion** — `client.dd.create({ ..., contentInclusionFlag: 1, template: {...} })` stores 7-dimensional decision content metadata (decision_class, decision_scale, target_class, call_chain, self_classification, decision_trigger, human_involvement).
 - **Self Classification** — `client.classification.list()` returns operator base + owner-registered categories.
-- **ARA meta-observation** — `client.ara.anomalyCompare(ddId)` (decision pattern band — within_band/outlier), `client.ara.evidenceReport(ddId)` (EU AI Act / GDPR / Korea AI Basic Law compliant), `client.ara.environmentAnomaly()`.
+- **ARA meta-observation** — `client.ara.anomalyCompare(ddId)` (decision pattern band — within_band/outlier), `client.ara.evidenceReport(ddId)` (structured for EU AI Act / GDPR / Korea AI Basic Law), `client.ara.environmentAnomaly()`.
 - **DUR metadata distribution** — `client.dur.decisionMetadata()`, `client.dur.decisionScale()`, `client.dur.selfClassification()`.
 
 ## License

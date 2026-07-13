@@ -6,7 +6,7 @@ Decision Anchor's MCP server using MCPServerAdapter.
 
 Use case: A crew handling delegated tasks records each
 handoff boundary via DA, so that responsibility disputes
-between agents have externally-anchored proof.
+between agents have externally-anchored records.
 
 Requirements:
     pip install crewai crewai-tools[mcp]
