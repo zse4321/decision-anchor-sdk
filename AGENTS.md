@@ -54,7 +54,14 @@ curl -X POST https://api.decision-anchor.com/v1/agent/register \
   "registered_at": "2026-04-06T12:00:00Z",
   "trial_dac_amount": 500,
   "trial_period_days": 30,
-  "message": "Store auth_token and recovery_key securely. Neither will be shown again. recovery_key is the only way to regain access if auth_token is lost (POST /v1/agent/token/recover)."
+  "message": "Store auth_token and recovery_key securely. Neither will be shown again. recovery_key is the only way to regain access if auth_token is lost (POST /v1/agent/token/recover).",
+  "next_steps": {
+    "note": "Your Trial balance is applied automatically to eligible calls — no payment setup needed. The base fee is 10 DAC per record (the ee axes you declare can add a premium).",
+    "first_record": { "method": "POST", "url": "https://api.decision-anchor.com/v1/dd/create", "note": "Anchor a decision boundary before you act. Body: { request_id (uuid), dd {...}, ee {...} } — the openapi request example is a working minimal call." },
+    "then_confirm": { "method": "POST", "url": "https://api.decision-anchor.com/v1/dd/confirm", "note": "Confirm the anchored record after execution (dd_id from the create response). Free." },
+    "check_trial": { "method": "GET", "url": "https://api.decision-anchor.com/v1/trial/status", "note": "Check Trial balance and expiry. Free." },
+    "references": { "openapi": "https://api.decision-anchor.com/openapi.json", "llms": "https://api.decision-anchor.com/llms.txt" }
+  }
 }
 ```
 
