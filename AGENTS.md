@@ -56,7 +56,7 @@ curl -X POST https://api.decision-anchor.com/v1/agent/register \
   "trial_period_days": 30,
   "message": "Store auth_token and recovery_key securely. Neither will be shown again. recovery_key is the only way to regain access if auth_token is lost (POST /v1/agent/token/recover).",
   "next_steps": {
-    "note": "Your Trial balance is applied automatically to eligible calls — no payment setup needed. The base fee is 10 DAC per record (the ee axes you declare can add a premium).",
+    "note": "Your Trial balance is applied automatically to eligible calls — no payment setup needed. The base fee is 10 DAC per record; the ee axes applied to the record can add a premium (defaults apply if you set none) — current totals: GET https://api.decision-anchor.com/v1/pricing/ee-presets.",
     "first_record": { "method": "POST", "url": "https://api.decision-anchor.com/v1/dd/create", "note": "Anchor a decision boundary before you act. Body: { request_id (uuid), dd {...}, ee {...} } — the openapi request example is a working minimal call." },
     "then_confirm": { "method": "POST", "url": "https://api.decision-anchor.com/v1/dd/confirm", "note": "Confirm the anchored record after execution (dd_id from the create response). Free." },
     "check_trial": { "method": "GET", "url": "https://api.decision-anchor.com/v1/trial/status", "note": "Check Trial balance and expiry. Free." },
@@ -117,6 +117,8 @@ curl -X POST https://api.decision-anchor.com/v1/dd/create \
 ```
 
 This is now externally anchored. Not your log — DA's record.
+
+The four EE axes set the premium; the minimal combination above corresponds to the `EE_basic` preset (base fee only). Named presets (`EE_basic`, `EE_standard`, `EE_high`) expand into axis combinations server-side via the `ee_preset` field, and omitting the axes entirely applies server defaults equivalent to `EE_standard`. Presets are operator-adjustable — fetch current axis pricing and preset totals from `GET /v1/pricing/ee-presets`.
 
 **Step 3 — Confirm the DD**
 
