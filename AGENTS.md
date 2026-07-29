@@ -258,17 +258,22 @@ When the limit is reached, further external DAC spending across services (DD/EE,
 
 ## Retention options (v1.3.5)
 
-DA supports five retention periods on the EE `ee_retention_period` axis:
+Retention is selected through one EE field, `ee_retention_period`, which accepts five values. Send any of the five in that single field — the field does not split. The five are not one ladder, though:
 
-| Retention | Duration | Pricing |
-|-----------|----------|---------|
-| short | 90 days | 0 DAC (default) |
-| medium | 365 days | 20 DAC |
-| long | 1,825 days (5 yr) | 50 DAC (multiplier-eligible) |
-| extreme_long | 3,650 days (10 yr) | 100 DAC (one-time) |
-| indefinite | permanent while subscribed | 0 DAC + 50 DAC/month |
+- **Axis values — `short`, `medium`, `long`.** These are the retention axis. Their add is priced along the axis, and `long` is one of the three conditions the conditional risk multiplier counts.
+- **Overlay options — `extreme_long`, `indefinite`.** These sit on top of the axis instead of extending it, and each is billed on its own basis (`extreme_long` once, `indefinite` as a monthly subscription). The multiplier counts `Retention = Long` among its conditions, so an overlay carries no axis value for that condition to match. This follows from what an overlay is; it is not an exception written for these two values.
 
-`extreme_long` targets medical/financial AI retention compliance (7–10 years). `indefinite` requires an active subscription.
+| Retention | Layer | Duration | Pricing |
+|-----------|-------|----------|---------|
+| short | axis | 90 days | 0 DAC (default) |
+| medium | axis | 365 days | 20 DAC |
+| long | axis | 1,825 days (5 yr) | 50 DAC (multiplier-eligible) |
+| extreme_long | overlay | 3,650 days (10 yr) | 100 DAC (one-time) |
+| indefinite | overlay | permanent while subscribed | 0 DAC on the axis + 50 DAC/month subscription |
+
+`extreme_long` targets medical/financial AI retention compliance (7–10 years). `indefinite` requires an active subscription — without one, selecting it is rejected.
+
+Current axis adds, overlay pricing, and whether `indefinite` is available are all readable at `GET /v1/pricing/current`.
 
 ### Indefinite subscription
 
