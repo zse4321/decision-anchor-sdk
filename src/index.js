@@ -19,7 +19,7 @@ const DEFAULT_BASE_URL = 'https://api.decision-anchor.com';
  *
  * The SDK does NOT execute payments — it surfaces the x402 challenge so the
  * caller can pay with their own x402 tooling (wallet/signer) and retry the
- * request with an `X-PAYMENT` header. No private keys are handled here.
+ * request with a `PAYMENT-SIGNATURE` header. No private keys are handled here.
  *
  * The x402 challenge is carried in the `payment-required` response header
  * (base64-encoded JSON; the body is typically empty `{}`), per x402 v2.
@@ -30,7 +30,14 @@ const DEFAULT_BASE_URL = 'https://api.decision-anchor.com';
  *   - resource    : { url, description, mimeType }
  *   - accepts     : [ { scheme, network, amount, asset, payTo, maxTimeoutSeconds, extra } ]
  *   - challenge   : the full decoded object (raw)
- *   - retryHeader : 'X-PAYMENT'  (header to attach the payment payload on retry)
+ *   - retryHeader : 'PAYMENT-SIGNATURE'  (header to attach the payment payload on retry)
+ *
+ * Header name is version-bound. The DA API speaks x402 v2, whose retry header is
+ * `PAYMENT-SIGNATURE`. `X-PAYMENT` is the v1 name and the server does NOT accept it:
+ * the payload extractor reads `payment-signature` only, so a v2 payload sent under
+ * `X-PAYMENT` is treated as unpaid and answered with another 402.
+ * Standard @x402/* clients pick the name from the payload version automatically —
+ * they send exactly one of the two, never both.
  */
 class PaymentRequiredError extends Error {
   constructor(challenge, { status = 402, method, path } = {}) {
@@ -44,7 +51,7 @@ class PaymentRequiredError extends Error {
     this.resource = challenge ? challenge.resource : null;
     this.accepts = (challenge && challenge.accepts) || [];
     this.challenge = challenge || null;
-    this.retryHeader = 'X-PAYMENT';
+    this.retryHeader = 'PAYMENT-SIGNATURE';
   }
 }
 

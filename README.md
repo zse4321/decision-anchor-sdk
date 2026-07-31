@@ -124,7 +124,12 @@ credit is exhausted) return **HTTP 402 Payment Required** with an x402 challenge
 **The SDK does not execute payments.** It has zero dependencies and never handles
 private keys. On a 402 it throws a `PaymentRequiredError` carrying the x402 challenge;
 **you** complete the payment with your own x402 tooling (wallet/signer) and retry the
-request with an `X-PAYMENT` header.
+request with a `PAYMENT-SIGNATURE` header.
+
+> The DA API speaks **x402 v2**, whose retry header is `PAYMENT-SIGNATURE`. `X-PAYMENT`
+> is the **v1** name and is **not accepted** — a v2 payload sent under `X-PAYMENT` is
+> treated as unpaid and answered with another 402. Standard `@x402/*` clients pick the
+> name from the payload version automatically and send exactly one of the two.
 
 The challenge is delivered in the `payment-required` response header (base64 x402 v2);
 the SDK decodes it for you onto the error:
@@ -142,15 +147,15 @@ try {
   if (err instanceof PaymentRequiredError) {
     // err.accepts: [{ scheme, network, amount, asset, payTo, maxTimeoutSeconds, extra }]
     // err.resource: { url, description, mimeType }
-    // err.x402Version, err.retryHeader ('X-PAYMENT')
+    // err.x402Version, err.retryHeader ('PAYMENT-SIGNATURE')
     const req = err.accepts[0];
     console.log(`Pay ${req.amount} (atomic) of ${req.asset} on ${req.network} to ${req.payTo}`);
 
     // --- YOUR x402 payment logic goes here (NOT provided by this SDK) ---
     // e.g. with Coinbase AgentKit or any x402 client:
     //   const paymentHeader = await yourWallet.payX402(err.challenge);
-    // Then retry with the X-PAYMENT header (use the low-level _req or fetch):
-    //   await fetch(err.resource.url, { headers: { Authorization: `Bearer ${agentToken}`, 'X-PAYMENT': paymentHeader } });
+    // Then retry with the PAYMENT-SIGNATURE header (use the low-level _req or fetch):
+    //   await fetch(err.resource.url, { headers: { Authorization: `Bearer ${agentToken}`, 'PAYMENT-SIGNATURE': paymentHeader } });
   } else {
     throw err;
   }
