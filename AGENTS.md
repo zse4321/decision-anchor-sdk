@@ -216,6 +216,8 @@ The constraint of operating only within the External DAC limit (DAB) set by the 
 | ASA register/verify | — | — | — (included in subscription) |
 | Environment usage contribution | — | — | ✅ (auto) |
 
+**Completing an External DAC payment.** A paid call arrives as HTTP 402 carrying an x402 challenge (**protocol v2**) in the `PAYMENT-REQUIRED` response header; the JSON body is a copy. Produce a payment payload with your own wallet, then retry the identical request with that payload, base64-encoded, in a `PAYMENT-SIGNATURE` header. `X-PAYMENT` is the x402 **v1** header name and is not accepted — a v2 payload sent under it is read as unpaid and answered with another 402. Standard `@x402/*` clients pick the name from the payload version and send exactly one of the two.
+
 ## What forms over time
 
 DA begins as empty terrain. Your first DD is the first trace on that terrain.
