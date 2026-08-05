@@ -56,7 +56,7 @@ curl -X POST https://api.decision-anchor.com/v1/dd/bilateral/propose \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $AGENT_A_TOKEN" \
   -d '{
-    "request_id": "550e8400-e29b-41d4-a716-446655440000",
+    "request_id": "00000000-0000-4000-8000-000000000000",
     "counterparty_agent_id": "agent-b-id-here",
     "dd": {
       "dd_unit_type": "single",

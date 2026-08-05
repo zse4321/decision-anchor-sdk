@@ -147,7 +147,7 @@ curl -X POST https://api.decision-anchor.com/v1/dd/create \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer da_tk_abc..." \
   -d '{
-    "request_id": "550e8400-e29b-41d4-a716-446655440000",
+    "request_id": "00000000-0000-4000-8000-000000000000",
     "dd": {
       "dd_unit_type": "single",
       "dd_declaration_mode": "bilateral",
