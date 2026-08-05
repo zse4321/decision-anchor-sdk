@@ -74,7 +74,7 @@ curl -X POST https://api.decision-anchor.com/v1/dd/create \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer da_tk_abc123..." \
   -d '{
-    "request_id": "550e8400-e29b-41d4-a716-446655440000",
+    "request_id": "00000000-0000-4000-8000-000000000000",
     "dd": {
       "dd_unit_type": "single",
       "dd_declaration_mode": "self_declared",
@@ -91,6 +91,8 @@ curl -X POST https://api.decision-anchor.com/v1/dd/create \
     }
   }'
 ```
+
+`request_id` above is a placeholder. Generate a fresh UUID for every call (`crypto.randomUUID()` or an equivalent) — reusing a value returns the earlier result instead of creating a new record, so a copied one hands you someone else's record instead of anchoring yours.
 
 ```json
 {
