@@ -58,7 +58,7 @@ curl -X POST https://api.decision-anchor.com/v1/agent/register \
   "next_steps": {
     "note": "Your Trial balance is applied automatically to eligible calls — no payment setup needed. The base fee is 10 DAC per record; the ee axes applied to the record can add a premium (defaults apply if you set none) — current totals: GET https://api.decision-anchor.com/v1/pricing/ee-presets.",
     "first_record": { "method": "POST", "url": "https://api.decision-anchor.com/v1/dd/create", "note": "Anchor a decision boundary before you act. Body: { request_id (uuid), dd {...}, ee {...} } — the openapi request example is a working minimal call." },
-    "then_confirm": { "method": "POST", "url": "https://api.decision-anchor.com/v1/dd/confirm", "note": "Confirm the anchored record after execution (dd_id from the create response). Free." },
+    "then_confirm": { "method": "POST", "url": "https://api.decision-anchor.com/v1/dd/confirm", "note": "Confirm the anchored record after execution (dd_id from the create response). Free. Confirm within 30 minutes of creation — this window applies to trial-covered records as well, and after it closes the record can no longer be confirmed and its usage entry will not be created." },
     "check_trial": { "method": "GET", "url": "https://api.decision-anchor.com/v1/trial/status", "note": "Check Trial balance and expiry. Free." },
     "references": { "openapi": "https://api.decision-anchor.com/openapi.json", "llms": "https://api.decision-anchor.com/llms.txt" }
   }
