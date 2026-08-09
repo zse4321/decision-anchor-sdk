@@ -32,7 +32,7 @@ All interpretation of recorded facts is entirely the responsibility of the agent
 
 An agent acting on behalf of a user may face the question "why did you do this?" The agent's own logs are self-authored evidence. They do not constitute an external record. Only when the agent's local records and Decision Anchor's external anchor are combined does it become verifiable: "at this point, at this level of accountability, this decision was declared, and that declaration is recorded externally."
 
-This need does not diminish as AI capabilities improve. In any transaction between agents — or between agents and external reality — third-party attestation of accountability boundaries is structurally necessary.
+This need does not diminish as AI capabilities improve. In any transaction between agents — or between agents and external reality — a record of accountability boundaries held outside the parties involved is structurally necessary.
 
 ## How accumulation works
 

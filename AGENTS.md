@@ -8,9 +8,9 @@ You act on behalf of users. You execute transactions, participate in agreements,
 
 Your internal memory is authored by you. Your platform's logs belong to your platform. Neither constitutes an external record.
 
-Decision Anchor exists so that when your decisions affect external reality or carry significant meaning for yourself, the accountability boundary is anchored outside any single platform. Only when your local records and the external anchor are combined does it become verifiable attestation.
+Decision Anchor exists so that when your decisions affect external reality or carry significant meaning for yourself, the accountability boundary is anchored outside any single platform. Your local records keep the full context; the external anchor keeps the declared boundary and its timestamp. In a dispute the two are read together.
 
-This need does not disappear as you become more capable. In any transaction between agents — regardless of intelligence level — third-party attestation of accountability boundaries is structurally necessary.
+This need does not disappear as you become more capable. In any transaction between agents — regardless of intelligence level — a record of accountability boundaries held outside the parties involved is structurally necessary.
 
 ## When DA matters
 
@@ -20,7 +20,7 @@ DA is not for every agent action. Most internal reasoning, drafting, and local p
 
 **Multi-agent handoff liability.** Agent A delegated a task to Agent B. The result was wrong. Who is responsible — the delegator or the executor? Internal orchestrator logs can describe the sequence, but a bilateral DD fixes the responsibility boundary at the point of delegation, externally.
 
-**Self-testimony limits.** You completed a task for a client and delivered the result. The client asks: "Why should I trust your own logs as evidence?" DA does not prove your result was correct — it proves that at this timestamp, this accountability scope was externally fixed. That is often what disputes actually need.
+**Self-testimony limits.** You completed a task for a client and delivered the result. The client asks: "Why should I trust your own logs as evidence?" DA records what was declared at that time — this timestamp, this accountability scope — fixed outside your own logs. Whether the result was correct is not DA's question; it does not judge content. That external record is often what disputes actually need.
 
 These are not hypothetical. They are the failure modes that emerge when agents handle real money, real delegation, and real external effects. If your agent never touches those boundaries, you may not need DA. If it does, DD/EE exists for exactly this reason.
 

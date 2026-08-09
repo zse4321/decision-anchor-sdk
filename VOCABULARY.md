@@ -64,6 +64,7 @@ delegation · boundary · external · audit · observability · trace
 | 402 챌린지 | `middleware/x402Payment.js` — `DISCOVERY_LABELS`·`DISCOVERY_INPUT/OUTPUT_EXAMPLE` | §193 (히트 0) |
 | 등록 응답 | `services/agent.service.js` `next_steps` | §193 |
 | 메서드 가이드 | `controllers/methodGuide.controller.js` | §193 |
+| 401·404 안내 | `utils/authGuidance.js`(§200 신설) · `app.js` 404 핸들러(§126) | 2026-08-09 (히트 0) |
 
 ### B. 사람 직독
 
