@@ -190,7 +190,7 @@ Full method reference: [OpenAPI Spec](https://api.decision-anchor.com/openapi.js
 - **5-axis EE pricing** — the `ee` object now accepts `content_disclosure_scope` (`owner`/`external`/`public`) and `delegation_state` (`none`/`partial`/`full`) in addition to the existing axes.
 - **Content Inclusion** — `client.dd.create({ ..., contentInclusionFlag: 1, template: {...} })` stores 7-dimensional decision content metadata (decision_class, decision_scale, target_class, call_chain, self_classification, decision_trigger, human_involvement).
 - **Self Classification** — `client.classification.list()` returns operator base + owner-registered categories.
-- **ARA meta-observation** — `client.ara.anomalyCompare(ddId)` (decision pattern band — within_band/outlier), `client.ara.evidenceReport(ddId)` (structured for EU AI Act / GDPR / Korea AI Basic Law), `client.ara.environmentAnomaly()`.
+- **ARA meta-observation** — `client.ara.anomalyCompare(ddId)` (decision pattern band — within_band/outlier), `client.ara.evidenceReport(ddId)` (structured for external audit review), `client.ara.environmentAnomaly()`.
 - **DUR metadata distribution** — `client.dur.decisionMetadata()`, `client.dur.decisionScale()`, `client.dur.selfClassification()`.
 
 ## License

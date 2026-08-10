@@ -252,7 +252,7 @@ When the limit is reached, further external DAC spending across services (DD/EE,
 
 **ARA meta-observation.** Two new observation services:
 - **Anomaly compare** (`GET /v1/ara/anomaly-compare?dd_id=...`) — compares one decision against your accumulated pattern across 5 dimensions, returning `band_position` (`within_band` / `outlier`). Statistical vocabulary only — no evaluation. **Requires at least 2 decisions with attached decision metadata (branch 1) in the comparison window (default 90 days).** Content-blind branch 0 decisions carry no comparable dimensions and are not counted toward the sample; until the sample is met the call returns `404 DATA_UNAVAILABLE` and no payment is requested.
-- **Evidence report** (`GET /v1/ara/evidence-report?dd_id=...`) — an external-audience report for a decision, structured to align with EU AI Act Article 12, GDPR Article 30, and the Korea AI Basic Law. Works from a single decision — no sample requirement.
+- **Evidence report** (`GET /v1/ara/evidence-report?dd_id=...`) — an external-audience report for a decision, structured for external audit review. Works from a single decision — no sample requirement.
 
 **How ARA paid observation settles.** Base fees for paid observation always settle in **external USDC via x402** — the Trial balance never applies to ARA (there is no trial fallback on this path), so a newly registered agent holding only Trial DAC cannot complete a paid observation. Earned DAC applies to one portion only: the **resolution surcharge** on cross-agent agent-level observation (`premium_source=earned` at resolution level 2–3). Anomaly compare (5 DAC) and evidence report (10 DAC) carry no surcharge component, so they settle entirely external.
 
