@@ -38,6 +38,11 @@ self-sovereign · liability shield · surveillance
 
 `verify` 계열은 **트리거가 아니다.** 다만 §1의 주어 기준에는 여전히 걸릴 수 있다 — "DA가 ~를 verifiable 하게 만든다"는 문장은 낱말이 아니라 **주어 때문에** 오염이다.
 
+★**층위 단서 — 이 제외는 점검(scan) 기준이다** (2026-08-12 명시). 사이트·인터페이스 CLAUDE.md 는 `verify`·`audit`·`judge`·`prove`·`검증`·`판정`·`증명`을 **무조건 회피**로 규정하는데, 이는 어긋남이 아니라 **적용 순간의 차이**다:
+- 전 표면을 **훑을 때**는 함수명(`/v1/asa/verify`)·필드명(`ee_integrity_verification_level`)·정당 용법(`structured for external audit review`)이 섞여 낱말 기준 판정이 구조적으로 오탐을 낸다 — 그래서 본 문서는 제외한다.
+- 사람이 읽는 산문을 **작성할 때**는 CLAUDE.md 의 무조건 회피가 적용된다. 산문에서 이 낱말들은 대개 DA 를 주어로 갖게 되므로, 보수적 회피가 결과적으로 §1과 같은 판정을 낸다.
+- 두 기준은 충돌이 아니라 층위다. **판정이 필요하면 §1로 돌아간다.** (CLAUDE.md 상호 참조 여부는 별도 판단 대기.)
+
 ## 3. 정본 목록
 
 ```
@@ -53,27 +58,37 @@ delegation · boundary · external · audit · observability · trace
 
 ### A. 에이전트 직독 (최우선 — LLM이 그대로 읽는다)
 
-| 표면 | 경로 | 최근 점검 |
-|---|---|---|
-| openapi | `da-api-server/public/openapi.json` — 108경로 `summary`·`description`·`example` + `info.description` + `tags` | §193 |
-| MCP 도구 | `da-api-server/mcp/tools/*.js` (10개) — 도구명·설명·인자 description | §193 |
-| A2A 카드 | `da-api-server/public/.well-known/agent-card.json` · `a2a/index.js` | §193 |
-| AGENTS.md 정본 | `decision-anchor-sdk/AGENTS.md` | §193 |
-| 파생 3곳 | `mcp/tools/docs.js` · `public/llms-full.txt` · `openapi info.description` | §193 |
-| llms.txt | `da-api-server/public/llms.txt` | §193 |
-| 402 챌린지 | `middleware/x402Payment.js` — `DISCOVERY_LABELS`·`DISCOVERY_INPUT/OUTPUT_EXAMPLE` | §193 (히트 0) |
-| 등록 응답 | `services/agent.service.js` `next_steps` | §193 |
-| 메서드 가이드 | `controllers/methodGuide.controller.js` | §193 |
-| 401·404 안내 | `utils/authGuidance.js`(§200 신설) · `app.js` 404 핸들러(§126) | 2026-08-09 (히트 0) |
+★**"최근 점검"과 "그 후 변경"은 다른 값이다** — 변경이 점검을 무효화하지는 않으나, 점검 이후 내용이 바뀐 표면은 다음 점검의 우선 대상이다 (2026-08-12 실측).
+
+| 표면 | 경로 | 최근 점검 | 그 후 변경 |
+|---|---|---|---|
+| openapi | `da-api-server/public/openapi.json` — 108경로 `summary`·`description`·`example` + `info.description` + `tags` | §193 | `488cb19`(§198 enum) · `8106322`(§200 자리표시자) · `ad9bc95`(§201 선언 정합) |
+| MCP 도구 | `da-api-server/mcp/tools/*.js` (10개) — 도구명·설명·인자 description | §193 | — |
+| A2A 카드 | `da-api-server/public/.well-known/agent-card.json` · `a2a/index.js` | §193 | — |
+| AGENTS.md 정본 | `decision-anchor-sdk/AGENTS.md` | §193 | §204 시정은 `fe77c3e` 로 본 문서에 반영됨 |
+| 파생 3곳 | `mcp/tools/docs.js` · `public/llms-full.txt` · `openapi info.description` | §193 | §204(8-09)·§205 재생성 |
+| llms.txt | `da-api-server/public/llms.txt` | §193 | `c1f0ce6`(§205 규정명 제거) |
+| 402 챌린지 | `middleware/x402Payment.js` — `DISCOVERY_LABELS`·`DISCOVERY_INPUT/OUTPUT_EXAMPLE` | §193 (히트 0) | — |
+| 등록 응답 | `services/agent.service.js` `next_steps` | §193 | §195·§192 문안 — §193과 같은 날(8-07) 전후, 선후 미확인 |
+| 메서드 가이드 | `controllers/methodGuide.controller.js` | §193 | — |
+| 401·404 안내 | `utils/authGuidance.js`(§200 신설) · `app.js` 404 핸들러(§126) | 2026-08-09 (히트 0) | — |
 
 ### B. 사람 직독
 
-| 표면 | 경로 | 최근 점검 |
-|---|---|---|
-| 코어 사이트 | `decision-anchor-site` — `index.html`·`ko.html`·`es`·`fr`·`ja`·`zh-tw` | **미분류** |
-| 블로그 | 사이트 `blog/` + 언어별 · `decision-anchor-sdk/blog/*.md` | **미분류** |
-| 변경 기록 | 사이트 `changelog/` 6개 언어 | **미분류** |
-| 사이트 llms | 사이트 `llms.txt`·`llms-full.txt` (★sync 체계 밖 독립 사본) | **미분류** |
+| 표면 | 경로 | 최근 점검 | 회피어 히트 (2026-08-12 실측, 미판정) |
+|---|---|---|---|
+| 코어 사이트 | `decision-anchor-site` — `index.html`·`ko.html`·`es`·`fr`·`ja`·`zh-tw` (JSON-LD·branch-note 포함) | **미분류** | 6파일 5건 |
+| 블로그 | 사이트 `blog/` 글 36 + 인덱스 6 · `decision-anchor-sdk/blog/*.md` | **미분류** | 42파일 54건 |
+| 변경 기록 | 사이트 `changelog/` 6개 언어 (drafts 6 포함 13파일) | **미분류** | 13파일 146건 |
+| 사이트 llms | 사이트 `llms.txt`·`llms-full.txt` (★sync 체계 밖 독립 사본 — §207 로 2026-08-11 정본과 바이트 동일 동기화됨) | **미분류** | 2파일 2건 |
+| 인터페이스 | `~/decision-anchor-interfaces` — `solo`·`business` × 6언어 12파일 (+자체 CLAUDE.md) | **미분류** — 2026-08-11 6개 언어 확장(§210) | 12파일 7건 (대부분 부정문·타국어 활용형) |
+| 랜딩 JSON-LD | 사이트 6파일 `<head>` 의 `application/ld+json` 블록 (§208 신설) | **미분류** | 0건 |
+| 랜딩 branch-note | 사이트 6파일 `<aside class="branch">` 설명 구획 (§209·§211 신설) | **미분류** | 0건 |
+
+- **합계 (인터페이스 제외한 종전 4표면)**: 63파일 **207건** — §6의 종전 "~150건" 을 대체하는 실측치.
+- ★**집계 방법의 한계**: 라틴어군은 대소문자 무시 부분일치라 스페인어 `probar` 활용형(`prueba`·`prueban`)·프랑스어 파생이 `prove` 히트에 섞인다. 판정 단계에서 걸러야 할 노이즈다.
+- ★**changelog 146건 중 상당수는 §7-5에서 이미 정당 판정된 계열**(결함 서술·HTTP 301 설명·DAP 삭제권·어휘 규율 확정 등 29건). 수치 판정 시 §5·§7-5 승계 여부가 함께 걸린다.
+- `_shared/lang-ja.css`·`lang-zh-tw.css`(2026-08-11 신설)는 **등재하지 않는다** — 산문이 없고(폰트 스택·`line-break`), 주석은 내부용 한국어다. 다음 점검이 같은 판단을 반복하지 않도록 여기 남긴다.
 
 ### C. 외부 제출문 (§188 범위 — 한 번 나가면 회수가 어렵다)
 
@@ -88,7 +103,8 @@ delegation · boundary · external · audit · observability · trace
 - **에러 메시지 전수** — 전 서비스·컨트롤러의 `new Error(...)` 문안
 - **DAP 포털** (3002, `dap-frontend`)
 - **어드민 콘솔** 문안 (`admin/public/`)
-- **`interfaces` 레포** — §111이 정정했다고 적었으나 현재 트리에 없다. 위치·존속 여부 미확인
+
+(~~`interfaces` 레포~~ — 2026-08-12 §4-B 로 이전. "트리에 없다"는 **경로 오인**이었다: 모노레포가 아니라 홈 직하 `~/decision-anchor-interfaces/` 에 있으며(2026-06-13 신설), §111 정정 기록도 그 레포 이력에 실재한다 — `2af9add`, 2026-07-13, "compliance by structure → accountability by structure".)
 
 ---
 
@@ -119,8 +135,12 @@ delegation · boundary · external · audit · observability · trace
 ## 6. 미해결
 
 - **`Bilateral Decision Witness`** — openapi(2) · agent-card(3) · llms.txt(2) · methodGuide(2) 등 **5표면에 고유명사처럼 박혀 있다.** 한 곳만 고치면 어긋난다. **대체어 확정이 선행**이며 그 전까지 무접촉.
-- **사이트·블로그·changelog ~150건 미분류** (§4-B)
-- **어휘 린터 미착수** — 화이트리스트 방식이면 실행 가능(§111 판단). §5 목록이 화이트리스트의 초기 내용이 된다. `agents-md:check` 옆(`staging.sh test` 사전 단계)이 자리.
+  - 실측 재확인(2026-08-12): openapi 2 · agent-card 3 · llms.txt(정본) 2 · methodGuide 2 · app.js 1 = **10건, 종전 수치와 일치.**
+  - ★**사이트 llms 미러 2건이 §207 동기화로 새로 생겼다** — 미러 규칙(바이트 동일)의 자동 복제이며, **대체어 확정 시 미러 재복사가 동반 절차가 된다.**
+  - 2026-08-11 인터페이스 확장으로 들어간 `Bilateral` 은 **전부 `Witness` 없는 파생**(anchor/declaration 계열, business 6언어 각 3곳). 블로그 `internal-logs-fail` 6언어판의 `Bilateral Decision Declaration, Bilateral DD` 병기도 동일. **`Witness` 계열 신규 유입 0.**
+  - 대체어 후보 논의 기록은 HANDOVER 전체에서 **0건**(재기록만 2회 — §192 계열·§204 PENDING). ★**시한을 두지 않는다** — 시장 반응을 보며 판단한다.
+- **사이트·블로그·changelog·인터페이스 등 미분류** — 실측 **63파일 207건**(2026-08-12, 인터페이스 7건 별도. §4-B 표·집계 한계·§5/§7-5 승계 문제 참조. 종전 "~150건" 을 대체).
+- **어휘 린터 미착수** — 화이트리스트 방식이면 실행 가능(§111 판단). §5 목록이 화이트리스트의 초기 내용이 된다. `agents-md:check` 옆(`staging.sh test` 사전 단계)이 자리. (2026-08-12 확인: `package.json` 에 `agents-md:check` 만 존재 — 미착수 유지.)
 
 ---
 
@@ -211,6 +231,8 @@ permanent|forever|immutable 히트
 ## 8. 언어별 표기 (다국어 표면)
 
 > **취지** — 영어 용어는 표기가 하나여야 점유가 성립하므로 **번역하지 않고 원문을 유지**한다. 다만 각 언어권 독자에게 뜻이 닿아야 하므로 **첫 등장에 현지어 풀이를 병기**한다. 표면별로 방침이 다르다 — 코어 랜딩·블로그는 용어 + 병기, **인터페이스는 학술 명사구를 피하고 일상어 풀이만** 쓴다.
+>
+> **적용 완료** (2026-08-12): 1단계 랜딩 5개 언어판(사이트 `a142586`·본 문서 `be31ab0`) → 2단계 블로그 36파일(`a8abc96` 직접 수정 + `88a442c5`·`dcbb520`·`a9ddc7b` 콘솔 재발행). 전 표면 실측 — **구표기 잔존 0 · 표와 어긋난 곳 0.**
 
 ### 8-1. 표기 표
 
@@ -247,3 +269,10 @@ permanent|forever|immutable 히트
 - **인터페이스 영역**(solo·business) — 1군 용어를 쓰지 않는다. 개념을 일상어로 풀어 쓴다. `Bilateral`만 예외로 영어 유지 + 인접 풀이(현행 유지).
 - **기계 표면**(llms·OpenAPI·루트 응답·Agent Card·AGENTS.md) — 영어 단일. 현지어 병기를 넣지 않는다.
 - `Bilateral`의 현지어 명칭(ko 양자 / ja 双方向 / zh-tw 雙邊)은 **통일하지 않는다** — 각 언어에서 자연스러운 말이 다를 뿐이며, 영어 `Bilateral` 병기가 연결을 유지한다.
+
+### 8-5. 미등재 — 판단 대기 (확정 표기 아님, 표에 넣지 않는다)
+
+- **`Bilateral Decision Witness` 전체 용어** — §8-1 에는 `Bilateral DD` 만 있다. §6 미해결과 연결되어 **표기 확정이 대체어 결정에 종속**된다.
+- **`non-judgmental`** — 인터페이스 footer 포함 전 표면 영어 고정. 언어별 취급 미규정.
+- **2군 용어 계열** — `append-only`(블로그 ko "추가 전용") · `tamper-evident` · `accountability boundary`("책임 경계"·"責任境界"). 현지어 표현이 이미 쓰이나 표에 없다.
+- **`recorder` 외 명제형 문장** — 예: `"It does not judge, does not predict, does not intervene, does not look inside."` 4연 부정 나열. 언어별 확정문 미등재.
