@@ -205,3 +205,45 @@ permanent|forever|immutable 히트
 **실측 산출**(2026-08-07 기준): 최초 DD 는 2026-06-04 이나 등급이 **`medium`(365일)** 이라 만료가 2027-06-04 이다. **실제 최초 만료는 `72903c4e-2ee1-4693-a6a7-59904021ee81`**(2026-07-27 13:04:32 생성, **`short`**) → **2026-10-25**.
 
 그 무렵 확인할 것: 만료 후 `GET /v1/dd/{dd_id}` 반환값 · ARA 직접 접근 차단 동작 · 그 동작이 문서(`AGENTS.md`·openapi)와 일치하는지.
+
+---
+
+## 8. 언어별 표기 (다국어 표면)
+
+> **취지** — 영어 용어는 표기가 하나여야 점유가 성립하므로 **번역하지 않고 원문을 유지**한다. 다만 각 언어권 독자에게 뜻이 닿아야 하므로 **첫 등장에 현지어 풀이를 병기**한다. 표면별로 방침이 다르다 — 코어 랜딩·블로그는 용어 + 병기, **인터페이스는 학술 명사구를 피하고 일상어 풀이만** 쓴다.
+
+### 8-1. 표기 표
+
+| 개념 | en | ko | ja | zh-tw | fr | es |
+|---|---|---|---|---|---|---|
+| External Anchoring Layer | 원문 | 외부 앵커링 레이어 | 外部アンカリング・レイヤー | 外部錨定層 | la couche d'ancrage externe | la capa de anclaje externo |
+| self-testimony | 원문 | 자기증언 | 自己証言 | 自我證言 | auto-témoignage | autotestimonio |
+| content-blind | 원문 | 내용을 읽지 않는 | 内容を読まない | 不讀取內容 | sans lire le contenu | sin leer el contenido |
+| Pre-execution Anchoring | 원문 | 실행 전 고정 | 実行前の固定 | 執行前固定 | ancrage avant exécution | anclaje previo a la ejecución |
+| Bilateral DD | 원문 | 양자 결정 선언 | 双方向決定宣言 | 雙邊決定宣告 | déclaration de décision bilatérale | declaración de decisión bilateral |
+| friction value | 원문 | 마찰값 | 摩擦値 | 摩擦值 | valeur de friction | valor de fricción |
+
+### 8-2. 병기 규칙
+
+- **첫 등장에만 병기**하고 이후는 한쪽만 쓴다.
+- 어느 쪽이 앞에 오는지는 표면에 따른다 — 랜딩은 `영어 원문(현지어)`, 블로그는 `현지어(영어 원문)`. 현행 관행을 따른 것이며 바꾸지 않는다.
+- 괄호 형식은 언어 관행을 따른다 — ko·ja·zh-tw는 전각/밀착(ko는 반각 밀착), fr·es는 반각 + 앞 공백.
+
+### 8-3. `recorder is not the actor` — 부정형이 정본
+
+"기록자와 행위자가 분리된다" 계열은 결과 서술이며 명제가 아니다. 언어별 정본 문장:
+
+| 언어 | 정본 문장 |
+|---|---|
+| en | The recorder is not the actor. |
+| ko | 기록자는 행위자가 아니다. |
+| ja | 記録者は行為者ではない。 |
+| zh-tw | 記錄者不是行為者。 |
+| fr | Le consignateur n'est pas l'acteur. |
+| es | El que consigna no es el actor. |
+
+### 8-4. 예외
+
+- **인터페이스 영역**(solo·business) — 1군 용어를 쓰지 않는다. 개념을 일상어로 풀어 쓴다. `Bilateral`만 예외로 영어 유지 + 인접 풀이(현행 유지).
+- **기계 표면**(llms·OpenAPI·루트 응답·Agent Card·AGENTS.md) — 영어 단일. 현지어 병기를 넣지 않는다.
+- `Bilateral`의 현지어 명칭(ko 양자 / ja 双方向 / zh-tw 雙邊)은 **통일하지 않는다** — 각 언어에서 자연스러운 말이 다를 뿐이며, 영어 `Bilateral` 병기가 연결을 유지한다.
