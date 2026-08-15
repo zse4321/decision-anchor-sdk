@@ -98,9 +98,9 @@ async function payWithAnchor(client, apiUrl, options, anchorContext) {
       ee_direct_access_period: '30d',
       ee_direct_access_quota: 5,
     },
-    // context 블록 제거 (§102): 서버가 읽지 않는 죽은 키였고, DA 는 content-blind 라
-    // summary 같은 자유 텍스트를 기록하지 않는다. 결정 내용 메타가 필요하면
-    // content_inclusion_flag: 1 + template(7차원 enum/토큰)을 사용할 것.
+    // No `context` block here: the server reads no such field, and DA is content-blind —
+    // free text like a summary is never recorded. If you need to describe the decision,
+    // use content_inclusion_flag: 1 with `template` (seven enum/token dimensions).
   });
   console.log(`  DD created: ${dd.dd_id} (DAC: ${dd.dac_amount})`);
 

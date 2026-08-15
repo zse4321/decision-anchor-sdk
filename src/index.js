@@ -192,8 +192,9 @@ class DDAPI {
    * @param {string} [params.premiumPaymentSource] - 'external' | 'earned'
    */
   async create({ requestId, dd, ee, continuity, premiumPaymentSource, contentInclusionFlag, template }) {
-    // context 파라미터 제거 (§102): 서버는 톱레벨 context 를 어디서도 읽지 않는다 —
-    // "기록됐다"는 오인만 유발하던 죽은 키. 결정 내용 메타는 content_inclusion_flag=1 + template 이 정본.
+    // There is deliberately no top-level `context` parameter: the server reads no such
+    // field, so passing one would only create the impression that it was recorded.
+    // To describe the decision itself, use content_inclusion_flag=1 with `template`.
     return this.c._req('POST', '/v1/dd/create', {
       body: {
         request_id: requestId || randomUUID(),   // safe default — see tsl.purchase
