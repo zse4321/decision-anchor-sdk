@@ -5,3 +5,6 @@ node_modules/
 # Python bytecode from example scripts — build artifact, never published.
 __pycache__/
 *.pyc
+
+# O-8 어휘 규율 정본은 모노레포 admin/ 에 있다 — 이 트리로 다시 들어오지 않게 막는다.
+VOCABULARY.md
