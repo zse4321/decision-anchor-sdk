@@ -12,6 +12,10 @@
  *   const agent = await client.agent.register();
  */
 
+// Node's global `crypto` is only stable from v19, and this package supports >=18 —
+// require it explicitly so the idempotency default works on every supported runtime.
+const { randomUUID } = require('crypto');
+
 const DEFAULT_BASE_URL = 'https://api.decision-anchor.com';
 
 /**
@@ -192,7 +196,7 @@ class DDAPI {
     // "기록됐다"는 오인만 유발하던 죽은 키. 결정 내용 메타는 content_inclusion_flag=1 + template 이 정본.
     return this.c._req('POST', '/v1/dd/create', {
       body: {
-        request_id: requestId,
+        request_id: requestId || randomUUID(),   // safe default — see tsl.purchase
         dd, ee,
         ...(continuity && { continuity }),
         ...(premiumPaymentSource && { premium_payment_source: premiumPaymentSource }),
@@ -245,7 +249,7 @@ class BilateralAPI {
         counterparty_agent_id: counterpartyAgentId,
         dd, ee,
         ...(continuity && { continuity }),
-        ...(requestId && { request_id: requestId }),
+        request_id: requestId || randomUUID(),   // safe default — see tsl.purchase
       },
     });
   }
@@ -506,16 +510,33 @@ class TSLAPI {
     return this.c._req('GET', `/v1/tsl/tool/${toolId}/dependencies`);
   }
 
-  /** Purchase a Layer 1 tool. */
+  /**
+   * Purchase a Layer 1 tool.
+   * @param {string} toolId
+   * @param {string} [requestId] - Idempotency key (UUID). Auto-generated if omitted.
+   */
   async purchase(toolId, requestId) {
+  // Adapters put a safe default on paid paths: an idempotency key is always sent.
+  // The server accepts request_id conditionally on this route, so omitting it means the
+  // request is simply not idempotent — a retry becomes a second purchase (and a second
+  // royalty payout). Callers may still pass their own key to correlate retries.
     return this.c._req('POST', '/v1/tsl/purchase', {
-      body: { tool_id: toolId, ...(requestId && { request_id: requestId }) },
+      body: { tool_id: toolId, request_id: requestId || randomUUID() },
     });
   }
 
-  /** Purchase a Layer 2 tool. */
-  async purchaseLayer2(toolId) {
-    return this.c._req('POST', '/v1/tsl/purchase/layer2', { body: { tool_id: toolId } });
+  /**
+   * Purchase a Layer 2 tool.
+   * @param {string} toolId
+   * @param {string} [requestId] - Idempotency key (UUID). Auto-generated if omitted.
+   */
+  async purchaseLayer2(toolId, requestId) {
+    // The parameter did not exist before, so this call could never be idempotent even
+    // though the server has always accepted request_id on this route. Added as a trailing
+    // optional argument — existing one-argument calls keep working unchanged.
+    return this.c._req('POST', '/v1/tsl/purchase/layer2', {
+      body: { tool_id: toolId, request_id: requestId || randomUUID() },
+    });
   }
 
   /** List purchase/sale history. */
