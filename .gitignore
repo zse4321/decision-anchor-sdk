@@ -1,3 +1,7 @@
 node_modules/
 .env
 .DS_Store
+
+# Python bytecode from example scripts — build artifact, never published.
+__pycache__/
+*.pyc
