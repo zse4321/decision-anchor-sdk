@@ -76,16 +76,27 @@ Payments settle in USDC on the Base network via x402 (HTTP 402).
 
 ## Installation
 
+Clone the repository and require the client directly:
+
 ```bash
-npm install decision-anchor-sdk
+git clone https://github.com/zse4321/decision-anchor-sdk.git
+cd decision-anchor-sdk
 ```
 
-Requires Node.js 18+ (uses native fetch).
+```javascript
+const DecisionAnchor = require('./src/index');
+```
+
+Requires Node.js 18+ (uses native fetch). There are no dependencies to install.
+
+**You may not need the SDK at all.** Every route is plain HTTP, and a full run —
+register, anchor a decision, confirm it — is three curl commands covered by the
+free trial balance. See [AGENTS.md](./AGENTS.md) for that path.
 
 ## Quick Start
 
 ```javascript
-const DecisionAnchor = require('decision-anchor-sdk');
+const DecisionAnchor = require('./src/index');
 const client = new DecisionAnchor();
 
 // Register
@@ -135,7 +146,7 @@ The challenge is delivered in the `payment-required` response header (base64 x40
 the SDK decodes it for you onto the error:
 
 ```javascript
-const DecisionAnchor = require('decision-anchor-sdk');
+const DecisionAnchor = require('./src/index');
 const { PaymentRequiredError } = DecisionAnchor;
 
 const client = new DecisionAnchor({ token: agentToken });

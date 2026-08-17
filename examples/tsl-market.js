@@ -37,7 +37,7 @@ async function main() {
     ee: {
       ee_retention_period: 'short',
       ee_integrity_verification_level: 'basic',
-      ee_disclosure_format_policy: 'none',
+      ee_disclosure_format_policy: 'internal',
       ee_responsibility_scope: 'minimal',
       ee_direct_access_period: '7d',
       ee_direct_access_quota: 3,
@@ -72,7 +72,7 @@ async function main() {
   const detail = await browser.tsl.getToolDetail(tool.tool_id);
   console.log('Name:', detail.tool_name);
   console.log('Price:', detail.price_dac, 'DAC');
-  console.log('Layer:', detail.tool_layer);
+  console.log('Layer:', detail.layer);
 
   // --- Agent B (buyer) ---
   const buyer = new DecisionAnchor({ baseUrl });

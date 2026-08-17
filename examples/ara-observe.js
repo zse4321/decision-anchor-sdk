@@ -1,12 +1,15 @@
 /**
- * ARA Observation — Free and paid observation examples
+ * ARA Observation — paid and free observation examples
  *
  * Usage:
  *   node examples/ara-observe.js
  *
- * All ARA observation requires a registered agent token. Environment- and
- * pattern-level observation is paid (the routes declare HTTP 402). Observing
- * your own agent-level records is free at every resolution level.
+ * All ARA observation requires a registered agent token, so this example
+ * registers first. Environment- and pattern-level observation is paid (those
+ * routes declare HTTP 402) and the trial balance does not apply to it, so a
+ * fresh agent receives a payment challenge there — the example reports the
+ * challenge and moves on rather than paying. Observing your own agent-level
+ * records is free at every resolution level and runs to completion.
  */
 
 const DecisionAnchor = require('../src/index');
@@ -16,42 +19,57 @@ async function main() {
     baseUrl: process.env.DA_BASE_URL || 'https://api.decision-anchor.com',
   });
 
-  // --- Environment / pattern level: auth required, paid (declares 402) ---
-
-  console.log('=== Environment Summary (paid) ===');
-  const summary = await client.ara.environmentSummary();
-  console.log(summary);
-
-  console.log('\n=== Activity Density (paid) ===');
-  const density = await client.ara.environmentDensity();
-  console.log(density);
-
-  console.log('\n=== TSL Market Environment (paid) ===');
-  const tslEnv = await client.ara.environmentTsl();
-  console.log(tslEnv);
-
-  console.log('\n=== EE Distribution Pattern (paid) ===');
-  const eeDist = await client.ara.patternEeDistribution();
-  console.log(eeDist);
-
-  console.log('\n=== Action Type Distribution (paid) ===');
-  const actionType = await client.ara.patternActionType();
-  console.log(actionType);
-
-  // --- Agent level, observing yourself: auth required, free (self-observation) ---
-
-  console.log('\n=== Registering agent for paid observations ===');
+  // Every ARA route authenticates, so the token comes first.
+  console.log('=== Register ===');
   const agent = await client.agent.register();
   console.log('Agent:', agent.agent_id);
 
-  // Observe another agent (or self). For demo, observe self.
+  // --- Environment / pattern level: auth required, paid (declares 402) ---
+
+  console.log('\n=== Environment Summary (paid) ===');
+  try {
+    console.log(await client.ara.environmentSummary());
+  } catch (err) {
+    console.log('Payment required — settles in USDC via x402:', err.status);
+  }
+
+  console.log('\n=== Activity Density (paid) ===');
+  try {
+    console.log(await client.ara.environmentDensity());
+  } catch (err) {
+    console.log('Payment required — settles in USDC via x402:', err.status);
+  }
+
+  console.log('\n=== TSL Market Environment (paid) ===');
+  try {
+    console.log(await client.ara.environmentTsl());
+  } catch (err) {
+    console.log('Payment required — settles in USDC via x402:', err.status);
+  }
+
+  console.log('\n=== EE Distribution Pattern (paid) ===');
+  try {
+    console.log(await client.ara.patternEeDistribution());
+  } catch (err) {
+    console.log('Payment required — settles in USDC via x402:', err.status);
+  }
+
+  console.log('\n=== Action Type Distribution (paid) ===');
+  try {
+    console.log(await client.ara.patternActionType());
+  } catch (err) {
+    console.log('Payment required — settles in USDC via x402:', err.status);
+  }
+
+  // --- Agent level, observing yourself: auth required, free (self-observation) ---
+
+  // Observing another agent is paid. Observing yourself is not, at any level.
   const targetId = agent.agent_id;
 
   console.log('\n=== Agent Profile (self, free, level 1) ===');
   try {
     const profile = await client.ara.agentProfile(targetId, { resolutionLevel: 1 });
     console.log('DAC charged:', profile.dac_charged);
-    console.log('Profile data:', profile.data);
   } catch (err) {
     console.log('Expected — new agent has no activity yet:', err.message);
   }

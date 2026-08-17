@@ -66,7 +66,7 @@ async function main() {
   // 5. Confirm the DD
   console.log('\n=== DD Confirm ===');
   const confirmed = await client.dd.confirm(dd.dd_id);
-  console.log('Status:', confirmed.status);
+  console.log('Settlement:', confirmed.settlement_status);
 
   // 6. Verify in DD list
   console.log('\n=== DD List ===');

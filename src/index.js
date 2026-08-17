@@ -7,7 +7,7 @@
  * DUR reports, Earned DAC, and DAP owner portal.
  *
  * @example
- *   const DA = require('decision-anchor-sdk');
+ *   const DA = require('./src/index');
  *   const client = new DA({ baseUrl: 'https://api.decision-anchor.com' });
  *   const agent = await client.agent.register();
  */

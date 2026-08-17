@@ -19,13 +19,37 @@
  *   node examples/x402-da-anchoring.js
  *
  * Requires:
- *   - decision-anchor-sdk
- *   - A USDC wallet on Base (for actual x402 payments)
+ *   - Node.js 18+ (no dependencies)
+ *   - A USDC wallet on Base only when you swap in a real payment
  *   - See https://x402.org for x402 protocol details
  */
 
-const DecisionAnchor = require('decision-anchor-sdk');
+const DecisionAnchor = require('../src/index');
 const crypto = require('crypto');
+
+/**
+ * Call the paid API you want to use.
+ *
+ * This is a placeholder, for the same reason the payment below is one: so the
+ * example runs end to end without a third-party account or a wallet. It returns
+ * the shape a 402 gives you — a status and the payment requirements.
+ *
+ * Replace it with a real request to whatever service you pay for:
+ *   const res = await fetch(apiUrl, options);
+ *
+ * Everything this file sends to Decision Anchor is real. Only the paid API and
+ * the payment are stood in for.
+ *
+ * @param {string} apiUrl - The paid API endpoint
+ * @param {object} options - Fetch options for the API call
+ * @returns {object} A minimal response object: { status, json() }
+ */
+async function callPaidApi(apiUrl, options) {
+  return {
+    status: 402,
+    json: async () => ({ amount: '0.25', asset: 'USDC', network: 'base' }),
+  };
+}
 
 /**
  * Execute an x402 USDC payment.
@@ -68,7 +92,7 @@ async function executeX402Payment(apiUrl, paymentDetails) {
 async function payWithAnchor(client, apiUrl, options, anchorContext) {
   // Step 1: Call the API — expect 402
   console.log(`\n  Calling ${apiUrl}...`);
-  const initialResponse = await fetch(apiUrl, options);
+  const initialResponse = await callPaidApi(apiUrl, options);
 
   if (initialResponse.status !== 402) {
     // No payment required — return the response directly
@@ -112,7 +136,7 @@ async function payWithAnchor(client, apiUrl, options, anchorContext) {
   // Step 4: Confirm DD AFTER payment (anchor completion)
   console.log('  Confirming DD (post-payment anchor)...');
   const confirmed = await client.dd.confirm(dd.dd_id);
-  console.log(`  DD confirmed: ${confirmed.status}`);
+  console.log(`  DD confirmed: ${confirmed.settlement_status}`);
 
   return {
     paid: true,
