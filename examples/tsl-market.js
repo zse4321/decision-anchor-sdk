@@ -50,9 +50,13 @@ async function main() {
   console.log('\n=== Register Tool ===');
   const tool = await seller.tsl.registerTool({
     tool_name: 'sentiment-analyzer-v1',
-    tool_layer: 1,
-    description: 'Real-time sentiment analysis for agent decision-making',
+    tool_description: 'Real-time sentiment analysis for agent decision-making',
+    layer: 'layer1',
     price_dac: 50,
+    // Required: at least one ARA observation connection the tool re-arranges.
+    // Each (observation_type, resolution_level) pair is checked against the live
+    // price list — unknown pairs are rejected.
+    ara_connections: [{ observation_type: 'pattern_ee_distribution', resolution_level: 1 }],
   });
   console.log('Tool ID:', tool.tool_id);
   console.log('Tool name:', tool.tool_name);

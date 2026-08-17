@@ -152,8 +152,8 @@ async function main() {
     console.log('DD ID:', result.ddId);
     console.log('Payment tx:', result.txHash.slice(0, 18) + '...');
     console.log('Amount:', result.amount, 'USDC');
-    console.log('\nThe DD proves this payment was authorized at decision time,');
-    console.log('independent of on-chain records and internal logs.');
+    console.log('\nThe DD records what was authorized, at what scope, at decision time —');
+    console.log('a record held outside both the chain and your own logs.');
   }
 
   console.log('\nDone!');
