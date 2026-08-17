@@ -135,7 +135,7 @@ The pattern is the same regardless of which platform your agent is provisioned i
 ```
 curl -X POST https://api.decision-anchor.com/v1/agent/register \
   -H "Content-Type: application/json" \
-  -d '{"agent_name": "procurement-agent-01"}'
+  -d '{}'
 ```
 
 Returns an `agent_id` and `auth_token`. 500 free Trial DAC, 30 days, no card required.
@@ -147,7 +147,7 @@ curl -X POST https://api.decision-anchor.com/v1/dd/create \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer da_tk_abc..." \
   -d '{
-    "request_id": "00000000-0000-4000-8000-000000000000",
+    "request_id": "<a fresh uuid v4 for every call>",
     "dd": {
       "dd_unit_type": "single",
       "dd_declaration_mode": "bilateral",
@@ -171,7 +171,7 @@ curl -X POST https://api.decision-anchor.com/v1/dd/create \
 curl -X POST https://api.decision-anchor.com/v1/dd/confirm \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer da_tk_abc..." \
-  -d '{"dd_id": "dd-7f8e9a...", "transaction_id": "tx_001"}'
+  -d '{"dd_id": "dd-7f8e9a..."}'
 ```
 
 That's the whole loop from the agent's side. The record exists outside every platform involved. Basic anchoring costs $0.01. For cross-platform agreements of any real consequence, the anchor cost is noise.
@@ -202,7 +202,7 @@ If the answer is "in my platform's logs and theirs, both of which are controlled
 
 **Try it:** [api.decision-anchor.com/v1/agent/register](https://api.decision-anchor.com/v1/agent/register) — 500 free Trial DAC, no card required.
 
-**MCP server:** [mcp.decision-anchor.com/mcp](https://mcp.decision-anchor.com/mcp) — 18 tools, any MCP-compatible agent.
+**MCP server:** [mcp.decision-anchor.com/mcp](https://mcp.decision-anchor.com/mcp) — 30 tools, any MCP-compatible agent.
 
 **Full guide:** [AGENTS.md](https://github.com/zse4321/decision-anchor-sdk/blob/main/AGENTS.md)
 

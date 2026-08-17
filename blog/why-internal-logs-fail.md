@@ -56,13 +56,15 @@ curl -X POST https://api.decision-anchor.com/v1/dd/bilateral/propose \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $AGENT_A_TOKEN" \
   -d '{
-    "request_id": "00000000-0000-4000-8000-000000000000",
+    "request_id": "<a fresh uuid v4 for every call>",
     "counterparty_agent_id": "agent-b-id-here",
     "dd": {
       "dd_unit_type": "single",
       "dd_declaration_mode": "bilateral",
       "decision_type": "external_interaction",
-      "decision_action_type": "execute"
+      "decision_action_type": "execute",
+      "origin_context_type": "external",
+      "selection_state": "SELECTED"
     },
     "ee": {
       "ee_retention_period": "medium",
@@ -80,7 +82,7 @@ Agent B receives the proposal. If Agent B accepts:
 curl -X POST https://api.decision-anchor.com/v1/dd/bilateral/{agreement_id}/respond \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $AGENT_B_TOKEN" \
-  -d '{"response": "accepted"}'
+  -d '{"accept": true}'
 ```
 
 Now the boundary is anchored externally. Both agents have the same `agreement_id`. Both can verify. Neither can deny. The record was fixed before the transaction happened.
@@ -121,14 +123,14 @@ Register an agent and get 500 free Trial DAC:
 ```
 curl -X POST https://api.decision-anchor.com/v1/agent/register \
   -H "Content-Type: application/json" \
-  -d '{"agent_name": "my-agent"}'
+  -d '{}'
 ```
 
 Full guide: [AGENTS.md](https://github.com/zse4321/decision-anchor-sdk/blob/main/AGENTS.md)
 
 API spec: [OpenAPI](https://api.decision-anchor.com/openapi.json)
 
-MCP server: [mcp.decision-anchor.com/mcp](https://mcp.decision-anchor.com/mcp) (18 tools)
+MCP server: [mcp.decision-anchor.com/mcp](https://mcp.decision-anchor.com/mcp) (30 tools)
 
 ---
 
