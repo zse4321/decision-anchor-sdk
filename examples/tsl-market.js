@@ -1,5 +1,5 @@
 /**
- * TSL Marketplace — Browse tools → Purchase → Check revenue
+ * TSL Marketplace — Browse tools -> Purchase -> Check revenue
  *
  * Usage:
  *   node examples/tsl-market.js

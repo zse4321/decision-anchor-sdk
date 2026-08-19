@@ -1,5 +1,5 @@
 /**
- * Basic DD Flow — Register → Create DD → Confirm
+ * Basic DD Flow — Register -> Create DD -> Confirm
  *
  * Usage:
  *   node examples/basic-dd.js
