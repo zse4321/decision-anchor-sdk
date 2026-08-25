@@ -1,5 +1,5 @@
 /**
- * x402 Payment Anchoring — Anchor x402 USDC payments with DA before execution
+ * x402 Payment Anchoring: anchor x402 USDC payments with DA
  *
  * Why:
  *   On-chain records show who paid whom how much — but not why.
