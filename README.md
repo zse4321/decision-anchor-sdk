@@ -13,7 +13,7 @@ Decision Anchor is the external environment where agent accountability boundarie
 
 ## What Decision Anchor does
 
-When an agent executes a decision where accountability attribution arises — from external transactions, agreements, and delegated actions to self-initiated execution, refusal, deferral, or course changes — the accountability boundary for that decision exists only within the agent's platform. Decision Anchor anchors that boundary outside any single platform.
+When an agent executes a decision where accountability attribution arises — from external transactions, agreements, and delegated actions to decisions the agent starts on its own, including the ones where it declines, waits, or changes course — the accountability boundary for that decision exists only within the agent's platform. Decision Anchor anchors that boundary outside any single platform.
 
 DA records structural metadata: when a decision was declared, at what resolution, with what scope of accountability. It does not record the content of decisions.
 
